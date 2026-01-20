@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Hub | Latest Artificial Intelligence Updates</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 25px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #06b6d4, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo-text p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 45px 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+        }
+        
+        .search-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+        
+        .subscribe-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .subscribe-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        @media (max-width: 1100px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Categories */
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .category-btn {
+            padding: 10px 20px;
+            background: #f1f5f9;
+            border: none;
+            border-radius: 50px;
+            color: #64748b;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+        }
+        
+        .category-btn:hover:not(.active) {
+            background: #e2e8f0;
+            color: #334155;
+        }
+        
+        /* Featured Article */
+        .featured-article {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            transition: transform 0.3s;
+        }
+        
+        .featured-article:hover {
+            transform: translateY(-5px);
+        }
+        
+        .featured-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        
+        .featured-content {
+            padding: 30px;
+        }
+        
+        .featured-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .featured-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #0f172a;
+            line-height: 1.3;
+        }
+        
+        .featured-excerpt {
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .article-source {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .source-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+        
+        .source-name {
+            font-weight: 600;
+        }
+        
+        .article-date {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        /* Articles Grid */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .article-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .article-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .article-category {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #f1f5f9;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #3b82f6;
+            margin-bottom: 12px;
+        }
+        
+        .article-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #0f172a;
+            line-height: 1.4;
+        }
+        
+        .article-excerpt {
+            color: #64748b;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .article-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        
+        .read-time {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .read-more {
+            color: #3b82f6;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .read-more:hover {
+            color: #1d4ed8;
+            gap: 10px;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .sidebar-widget {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .widget-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .trending-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .trending-item {
+            display: flex;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .trending-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .trending-rank {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #cbd5e1;
+            min-width: 30px;
+        }
+        
+        .trending-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #0f172a;
+        }
+        
+        .trending-content p {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        
+        .ai-tools-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .ai-tool {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+        
+        .ai-tool:hover {
+            background: #f1f5f9;
+            transform: translateX(5px);
+        }
+        
+        .tool-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .tool-info h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .tool-info p {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        
+        .ai-newsletter {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .newsletter-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .newsletter-desc {
+            color: #94a3b8;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .newsletter-input {
+            padding: 15px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .newsletter-btn {
+            padding: 15px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .newsletter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: white;
+            padding: 50px 0 30px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #e2e8f0;
+        }
+        
+        .footer-section p {
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #3b82f6;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: #1e293b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #1e293b;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        /* Load More Button */
+        .load-more {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .load-more-btn {
+            padding: 15px 40px;
+            background: white;
+            border: 2px solid #3b82f6;
+            color: #3b82f6;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .load-more-btn:hover {
+            background: #3b82f6;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .featured-title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>AI News Hub</h1>
+                        <p>Latest Artificial Intelligence Updates & Insights</p>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Search AI news, tools, trends...">
+                        <button class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <button class="subscribe-btn">
+                        <i class="fas fa-bell"></i> Subscribe
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Categories -->
+        <div class="categories">
+            <button class="category-btn active">All News</button>
+            <button class="category-btn">Machine Learning</button>
+            <button class="category-btn">Deep Learning</button>
+            <button class="category-btn">Natural Language</button>
+            <button class="category-btn">Computer Vision</button>
+            <button class="category-btn">Robotics</button>
+            <button class="category-btn">AI Ethics</button>
+            <button class="category-btn">Startups</button>
+            <button class="category-btn">Research</button>
+        </div>
+        
+        <div class="main-content">
+            <!-- Main Content -->
+            <div class="main-articles">
+                <!-- Featured Article -->
+                <div class="featured-article fade-in">
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="GPT-5 Announcement" class="featured-image">
+                    <div class="featured-content">
+                        <div class="featured-badge">BREAKING NEWS</div>
+                        <h2 class="featured-title">OpenAI Announces GPT-5: A Revolutionary Leap in AI Capabilities</h2>
+                        <p class="featured-excerpt">OpenAI has officially unveiled GPT-5, their most advanced language model yet, featuring multimodal understanding, reasoning capabilities that approach human-level performance, and significantly reduced hallucination rates. Early testers report the model demonstrates unprecedented contextual understanding.</p>
+                        <div class="article-meta">
+                            <div class="article-source">
+                                <div class="source-logo">TC</div>
+                                <div class="source-name">TechCrunch</div>
+                            </div>
+                            <div class="article-date">2 hours ago • 8 min read</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Articles Grid -->
+                <div class="articles-grid" id="articles-container">
+                    <!-- Articles will be loaded here by JavaScript -->
+                </div>
+                
+                <!-- Load More Button -->
+                <div class="load-more">
+                    <button class="load-more-btn" id="load-more">
+                        <i class="fas fa-sync-alt"></i> Load More Articles
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- Trending Articles -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">
+                        <i class="fas fa-fire"></i> Trending Now
+                    </h3>
+                    <div class="trending-list">
+                        <div class="trending-item">
+                            <div class="trending-rank">1</div>
+                            <div class="trending-content">
+                                <h4>Google's Gemini Ultra Outperforms GPT-4 in Benchmark Tests</h4>
+                                <p>1.2k reads • 3 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-rank">2</div>
+                            <div class="trending-content">
+                                <h4>EU Passes Comprehensive AI Regulation Act</h4>
+                                <p>950 reads • 5 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-rank">3</div>
+                            <div class="trending-content">
+                                <h4>Microsoft Integrates AI Copilot Across All Office 365 Apps</h4>
+                                <p>870 reads • 7 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-rank">4</div>
+                            <div class="trending-content">
+                                <h4>AI Detects Early Stage Cancer with 98% Accuracy</h4>
+                                <p>750 reads • 9 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="trending-item">
+                            <div class="trending-rank">5</div>
+                            <div class="trending-content">
+                                <h4>Stanford Releases Open-Source 70B Parameter LLM</h4>
+                                <p>620 reads • 12 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- AI Tools -->
+                <div class="sidebar-widget">
+                    <h3 class="widget-title">
+                        <i class="fas fa-tools"></i> AI Tools of the Week
+                    </h3>
+                    <div class="ai-tools-list">
+                        <div class="ai-tool">
+                            <div class="tool-icon">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            <div class="tool-info">
+                                <h4>Midjourney v6</h4>
+                                <p>Advanced image generation with enhanced realism</p>
+                            </div>
+                        </div>
+                        <div class="ai-tool">
+                            <div class="tool-icon">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div class="tool-info">
+                                <h4>GitHub Copilot X</h4>
+                                <p>AI-powered pair programming with chat interface</p>
+                            </div>
+                        </div>
+                        <div class="ai-tool">
+                            <div class="tool-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div class="tool-info">
+                                <h4>Runway Gen-2</h4>
+                                <p>Text-to-video generation with cinematic quality</p>
+                            </div>
+                        </div>
+                        <div class="ai-tool">
+                            <div class="tool-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="tool-info">
+                                <h4>ChatGPT Analytics</h4>
+                                <p>Business intelligence powered by GPT-4</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Newsletter -->
+                <div class="sidebar-widget ai-newsletter">
+                    <h3 class="newsletter-title">AI Insights Newsletter</h3>
+                    <p class="newsletter-desc">Get weekly updates on the latest AI breakthroughs, research papers, and tools directly in your inbox.</p>
+                    <form class="newsletter-form" id="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                        <button type="submit" class="newsletter-btn">Subscribe Now</button>
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AI News Hub</h3>
+                    <p>Your premier source for the latest artificial intelligence news, research breakthroughs, and industry insights. Stay ahead in the AI revolution.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Latest News</a></li>
+                        <li><a href="#">AI Research Papers</a></li>
+                        <li><a href="#">Tool Reviews</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Podcasts</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Machine Learning</a></li>
+                        <li><a href="#">Natural Language Processing</a></li>
+                        <li><a href="#">Computer Vision</a></li>
+                        <li><a href="#">Robotics</a></li>
+                        <li><a href="#">AI Ethics & Safety</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Advertise</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 AI News Hub. All rights reserved. AI-generated content is clearly marked.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample AI news data
+            const aiNewsData = [
+                {
+                    id: 1,
+                    title: "Meta's New AI Model Can Generate Realistic 3D Assets in Seconds",
+                    excerpt: "Meta researchers have unveiled a revolutionary AI system that can create detailed 3D models from text descriptions, potentially transforming game development and virtual reality.",
+                    category: "Research",
+                    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+                    source: "The Verge",
+                    date: "4 hours ago",
+                    readTime: "5 min"
+                },
+                {
+                    id: 2,
+                    title: "AI Predicts Protein Structures with Unprecedented Accuracy",
+                    excerpt: "DeepMind's AlphaFold 3 has achieved breakthrough results in protein structure prediction, accelerating drug discovery and biological research worldwide.",
+                    category: "Deep Learning",
+                    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+                    source: "Nature",
+                    date: "6 hours ago",
+                    readTime: "7 min"
+                },
+                {
+                    id: 3,
+                    title: "Tesla's Optimus Robot Now Performing Complex Factory Tasks",
+                    excerpt: "Elon Musk demonstrates the latest version of Tesla's humanoid robot autonomously handling assembly line operations, showcasing significant advancements in robotics AI.",
+                    category: "Robotics",
+                    image: "https://images.unsplash.com/photo-1678931500645-38e3b7b3c9c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+                    source: "Wired",
+                    date: "8 hours ago",
+                    readTime: "6 min"
+                },
+                {
+                    id: 4,
+                    title: "New AI System Detects Early Signs of Alzheimer's from Speech Patterns",
+                    excerpt: "Researchers at MIT have developed an AI model that can identify subtle speech patterns indicative of early-stage Alzheimer's disease with 90% accuracy.",
+                    category: "Healthcare AI",
+                    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+                    source: "MIT News",
+                    date: "10 hours ago",
+                    readTime: "4 min"
+                },
+                {
+                    id: 5,
+                    title: "AI-Generated Content Now 40% of Web, Study Finds",
+                    excerpt: "A comprehensive analysis reveals that nearly 40% of web content is now AI-generated, raising questions about information quality and authenticity.",
+                    category: "AI Ethics",
+                    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+                    source: "Forbes",
+                    date: "12 hours ago",
+                    readTime: "8 min"
+                },
+                {
+                    id: 6,
+                    title: "China Announces $50 Billion Investment in AI Infrastructure",
+                    excerpt: "The Chinese government reveals an ambitious plan to build next-generation AI computing centers, aiming to lead global AI development by 2030.",
+                    category: "Startups",
+                    image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+                    source: "Bloomberg",
+                    date: "14 hours ago",
+                    readTime: "5 min"
+                },
+                {
+                    id: 7,
+                    title: "AI-Powered Trading Algorithms Outperform Human Traders by 30%",
+                    excerpt: "A new study shows that advanced AI trading systems consistently outperform human traders in volatile markets, reshaping the financial industry.",
+                    category: "Finance AI",
+                    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+                    source: "Financial Times",
+                    date: "16 hours ago",
+                    readTime: "6 min"
+                },
+                {
+                    id: 8,
+                    title: "Open-Source AI Community Releases Powerful Alternative to ChatGPT",
+                    excerpt: "A collective of researchers and developers unveil an open-source LLM that rivals proprietary models in performance while being completely transparent.",
+                    category: "Open Source",
+                    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+                    source: "TechCrunch",
+                    date: "18 hours ago",
+                    readTime: "7 min"
+                }
+            ];
+            
+            // DOM Elements
+            const articlesContainer = document.getElementById('articles-container');
+            const loadMoreBtn = document.getElementById('load-more');
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const searchInput = document.querySelector('.search-input');
+            const searchBtn = document.querySelector('.search-btn');
+            const newsletterForm = document.getElementById('newsletter-form');
+            
+            let displayedArticles = 4;
+            let currentCategory = 'All News';
+            let currentSearch = '';
+            
+            // Initialize
+            renderArticles(aiNewsData.slice(0, displayedArticles));
+            
+            // Load More Button
+            loadMoreBtn.addEventListener('click', function() {
+                displayedArticles += 4;
+                
+                // Filter articles based on current category and search
+                let filteredArticles = filterArticles(aiNewsData, currentCategory, currentSearch);
+                
+                if (displayedArticles >= filteredArticles.length) {
+                    loadMoreBtn.style.display = 'none';
+                }
+                
+                renderArticles(filteredArticles.slice(0, displayedArticles));
+            });
+            
+            // Category Filter
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update current category
+                    currentCategory = this.textContent;
+                    
+                    // Reset displayed articles
+                    displayedArticles = 4;
+                    
+                    // Filter articles
+                    let filteredArticles = filterArticles(aiNewsData, currentCategory, currentSearch);
+                    
+                    // Show or hide load more button
+                    if (filteredArticles.length <= displayedArticles) {
+                        loadMoreBtn.style.display = 'none';
+                    } else {
+                        loadMoreBtn.style.display = 'flex';
+                    }
+                    
+                    // Render filtered articles
+                    renderArticles(filteredArticles.slice(0, displayedArticles));
+                });
+            });
+            
+            // Search Functionality
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            // Newsletter Subscription
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+                
+                // Show success message
+                showNotification(`Thank you! You've been subscribed to our AI newsletter. Confirmation sent to ${email}.`, 'success');
+                
+                // Reset form
+                this.reset();
+            });
+            
+            // Functions
+            function renderArticles(articles) {
+                articlesContainer.innerHTML = '';
+                
+                articles.forEach(article => {
+                    const articleCard = document.createElement('article');
+                    articleCard.className = 'article-card fade-in';
+                    
+                    articleCard.innerHTML = `
+                        <img src="${article.image}" alt="${article.title}" class="article-image">
+                        <div class="article-content">
+                            <span class="article-category">${article.category}</span>
+                            <h3 class="article-title">${article.title}</h3>
+                            <p class="article-excerpt">${article.excerpt}</p>
+                            <div class="article-footer">
+                                <div class="read-time">
+                                    <i class="far fa-clock"></i> ${article.readTime} read
+                                </div>
+                                <a href="#" class="read-more">
+                                    Read More <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    
+                    articlesContainer.appendChild(articleCard);
+                });
+            }
+            
+            function filterArticles(articles, category, searchTerm) {
+                let filtered = [...articles];
+                
+                // Filter by category
+                if (category !== 'All News') {
+                    filtered = filtered.filter(article => article.category === category);
+                }
+                
+                // Filter by search term
+                if (searchTerm.trim() !== '') {
+                    const term = searchTerm.toLowerCase();
+                    filtered = filtered.filter(article => 
+                        article.title.toLowerCase().includes(term) || 
+                        article.excerpt.toLowerCase().includes(term) ||
+                        article.category.toLowerCase().includes(term)
+                    );
+                }
+                
+                return filtered;
+            }
+            
+            function performSearch() {
+                currentSearch = searchInput.value.trim();
+                
+                // Reset displayed articles
+                displayedArticles = 4;
+                
+                // Filter articles
+                let filteredArticles = filterArticles(aiNewsData, currentCategory, currentSearch);
+                
+                // Show or hide load more button
+                if (filteredArticles.length <= displayedArticles) {
+                    loadMoreBtn.style.display = 'none';
+                } else {
+                    loadMoreBtn.style.display = 'flex';
+                }
+                
+                // Show message if no results
+                if (filteredArticles.length === 0) {
+                    articlesContainer.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                            <i class="fas fa-search" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 20px;"></i>
+                            <h3 style="color: #64748b; margin-bottom: 10px;">No articles found</h3>
+                            <p style="color: #94a3b8;">Try adjusting your search or filter to find what you're looking for.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Render filtered articles
+                renderArticles(filteredArticles.slice(0, displayedArticles));
+                
+                // Show search notification
+                if (currentSearch !== '') {
+                    showNotification(`Found ${filteredArticles.length} articles for "${currentSearch}"`, 'info');
+                }
+            }
+            
+            function showNotification(message, type) {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#10b981' : '#3b82f6'};
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+                    z-index: 1000;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    max-width: 350px;
+                    animation: slideIn 0.3s ease-out;
+                `;
+                
+                notification.innerHTML = `
+                    <div style="font-size: 1.2rem;">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                    </div>
+                    <div style="font-weight: 500;">${message}</div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Remove notification after 5 seconds
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease-out';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 5000);
+            }
+            
+            // Add CSS for notification animations
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Simulate real-time updates
+            setInterval(() => {
+                // Update trending article read counts randomly
+                const trendingReads = document.querySelectorAll('.trending-content p');
+                trendingReads.forEach(p => {
+                    const currentReads = parseInt(p.textContent.match(/\d+/)[0]);
+                    const newReads = currentReads + Math.floor(Math.random() * 10);
+                    p.textContent = p.textContent.replace(/\d+/, newReads);
+                });
+            }, 30000); // Update every 30 seconds
+        });
+    </script>
+</body>
+</html>

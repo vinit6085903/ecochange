@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Details | EUR/USD Buy Signal | TradingView</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0e1726;
+            color: #e0e6ed;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #1b2e4b;
+            margin-bottom: 25px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #0096e6;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 28px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: #888ea8;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: #0096e6;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: #0096e6;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #007bbd;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: #0096e6;
+            border: 1px solid #0096e6;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(0, 150, 230, 0.1);
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #888ea8;
+        }
+        
+        .breadcrumb a {
+            color: #888ea8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .breadcrumb a:hover {
+            color: #0096e6;
+        }
+        
+        .breadcrumb i {
+            margin: 0 10px;
+            font-size: 12px;
+        }
+        
+        /* Signal Header */
+        .signal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #1b2e4b;
+            border-radius: 10px;
+            border-left: 5px solid #00ab55;
+        }
+        
+        .signal-title h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .signal-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #888ea8;
+            font-size: 14px;
+        }
+        
+        .signal-type {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        
+        .signal-type.buy {
+            background-color: rgba(0, 171, 85, 0.2);
+            color: #00ab55;
+        }
+        
+        .signal-type.sell {
+            background-color: rgba(231, 81, 90, 0.2);
+            color: #e7515a;
+        }
+        
+        .signal-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .signal-actions button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 25px;
+        }
+        
+        /* Chart Section */
+        .chart-container {
+            background-color: #1b2e4b;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .chart-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .timeframe-selector {
+            display: flex;
+            background-color: #0e1726;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .timeframe {
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .timeframe.active {
+            background-color: #0096e6;
+            color: white;
+        }
+        
+        .timeframe:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .chart-wrapper {
+            height: 400px;
+            position: relative;
+        }
+        
+        /* Signal Details */
+        .signal-details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .detail-card {
+            background-color: #1b2e4b;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .detail-card h3 {
+            font-size: 16px;
+            color: #888ea8;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .detail-card h3 i {
+            color: #0096e6;
+        }
+        
+        .detail-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value.green {
+            color: #00ab55;
+        }
+        
+        .detail-value.red {
+            color: #e7515a;
+        }
+        
+        .detail-note {
+            font-size: 14px;
+            color: #888ea8;
+        }
+        
+        /* Signal Analysis */
+        .analysis-section {
+            background-color: #1b2e4b;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: #0096e6;
+        }
+        
+        .analysis-content {
+            line-height: 1.8;
+        }
+        
+        .key-points {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        
+        .key-points li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .key-points li:before {
+            content: "•";
+            color: #0096e6;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        
+        /* Right Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        /* Signal Stats */
+        .signal-stats {
+            background-color: #1b2e4b;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            color: #888ea8;
+        }
+        
+        .stat-value {
+            font-weight: 600;
+        }
+        
+        /* Trader Info */
+        .trader-info {
+            background-color: #1b2e4b;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .trader-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .trader-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #0e1726;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #0096e6;
+        }
+        
+        .trader-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .trader-rating {
+            color: #ffc107;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .trader-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .trader-stat {
+            text-align: center;
+            padding: 15px;
+            background-color: #0e1726;
+            border-radius: 8px;
+        }
+        
+        .trader-stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .trader-stat-label {
+            font-size: 12px;
+            color: #888ea8;
+        }
+        
+        /* Risk Warning */
+        .risk-warning {
+            background-color: rgba(231, 81, 90, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 5px solid #e7515a;
+        }
+        
+        .warning-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #e7515a;
+        }
+        
+        .warning-content {
+            font-size: 14px;
+            color: #888ea8;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #1b2e4b;
+            text-align: center;
+            color: #888ea8;
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: #888ea8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #0096e6;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .signal-details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .signal-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .chart-controls {
+                flex-wrap: wrap;
+            }
+            
+            .trader-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Animation for signal entry */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 171, 85, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 171, 85, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 171, 85, 0); }
+        }
+        
+        .signal-entry {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                TradingView
+            </div>
+            <nav class="nav-links">
+                <a href="signals.html">Signals</a>
+                <a href="markets.html">Markets</a>
+                <a href="watchlist.html">Watchlist</a>
+                <a href="analysis.html">Analysis</a>
+                <a href="#" class="active">Signal Details</a>
+            </nav>
+            <div class="user-actions">
+                <button class="btn btn-outline">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-user"></i> Account
+                </button>
+            </div>
+        </header>
+        
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="signals.html">Trading Signals</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="forex-signals.html">Forex Signals</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>EUR/USD Buy Signal</span>
+        </div>
+        
+        <!-- Signal Header -->
+        <div class="signal-header">
+            <div class="signal-title">
+                <h1>EUR/USD Buy Signal</h1>
+                <div class="signal-meta">
+                    <span class="signal-type buy">Buy</span>
+                    <span><i class="far fa-clock"></i> Generated: 2 hours ago</span>
+                    <span><i class="fas fa-chart-bar"></i> Forex - Major Pairs</span>
+                    <span><i class="fas fa-bolt"></i> High Confidence</span>
+                </div>
+            </div>
+            <div class="signal-actions">
+                <button class="btn btn-outline">
+                    <i class="far fa-star"></i> Save
+                </button>
+                <button class="btn btn-primary">
+                    <i class="fas fa-bell"></i> Set Alert
+                </button>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div class="chart-title">EUR/USD 4H Chart</div>
+                        <div class="chart-controls">
+                            <div class="timeframe-selector">
+                                <div class="timeframe">1H</div>
+                                <div class="timeframe active">4H</div>
+                                <div class="timeframe">1D</div>
+                                <div class="timeframe">1W</div>
+                            </div>
+                            <button class="btn btn-outline">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="priceChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Signal Details Grid -->
+                <div class="signal-details-grid">
+                    <div class="detail-card">
+                        <h3><i class="fas fa-bullseye"></i> Entry Price</h3>
+                        <div class="detail-value green">1.08245</div>
+                        <div class="detail-note">Current market price</div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <h3><i class="fas fa-flag-checkered"></i> Take Profit</h3>
+                        <div class="detail-value green">1.09500</div>
+                        <div class="detail-note">+125 pips from entry</div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <h3><i class="fas fa-shield-alt"></i> Stop Loss</h3>
+                        <div class="detail-value red">1.07500</div>
+                        <div class="detail-note">-75 pips from entry</div>
+                    </div>
+                    
+                    <div class="detail-card">
+                        <h3><i class="fas fa-balance-scale"></i> Risk/Reward</h3>
+                        <div class="detail-value green">1:1.67</div>
+                        <div class="detail-note">Favorable ratio</div>
+                    </div>
+                </div>
+                
+                <!-- Signal Analysis -->
+                <div class="analysis-section">
+                    <h2 class="section-title"><i class="fas fa-chart-pie"></i> Signal Analysis</h2>
+                    <div class="analysis-content">
+                        <p>This EUR/USD buy signal is generated based on a confluence of technical factors indicating a potential upward movement in the pair. The analysis combines support/resistance levels, moving averages, and momentum indicators.</p>
+                        
+                        <h3 style="margin: 20px 0 10px 0; color: #e0e6ed;">Key Technical Factors:</h3>
+                        <ul class="key-points">
+                            <li><strong>Strong Support</strong> at 1.08000 level held multiple times</li>
+                            <li><strong>Bullish Divergence</strong> on RSI indicating weakening downward momentum</li>
+                            <li><strong>Break above</strong> 50-period moving average on 4H chart</li>
+                            <li><strong>Fibonacci Retracement</strong> from recent swing high to low shows 61.8% retracement level as support</li>
+                            <li><strong>MACD Histogram</strong> turning positive, suggesting bullish momentum building</li>
+                        </ul>
+                        
+                        <h3 style="margin: 20px 0 10px 0; color: #e0e6ed;">Fundamental Context:</h3>
+                        <p>The ECB's recent dovish stance combined with weaker than expected US employment data creates a favorable environment for EUR strength against USD in the short term.</p>
+                    </div>
+                </div>
+                
+                <!-- Trade Management -->
+                <div class="analysis-section">
+                    <h2 class="section-title"><i class="fas fa-cogs"></i> Trade Management</h2>
+                    <div class="analysis-content">
+                        <p><strong>Position Sizing:</strong> Recommended position size is 1-2% of account capital per trade based on the 75 pip stop loss.</p>
+                        <p><strong>Partial Profit Taking:</strong> Consider taking 50% profit at +80 pips (1.09025) and moving stop loss to breakeven.</p>
+                        <p><strong>Risk Management:</strong> Never risk more than 2% of your trading capital on a single trade. Adjust position size according to your account size and risk tolerance.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Sidebar -->
+            <div class="sidebar">
+                <!-- Signal Stats -->
+                <div class="signal-stats">
+                    <h2 class="section-title"><i class="fas fa-chart-bar"></i> Signal Statistics</h2>
+                    <div class="stat-item">
+                        <span class="stat-label">Success Rate</span>
+                        <span class="stat-value green">78.2%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Avg. Profit</span>
+                        <span class="stat-value green">+92 pips</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Avg. Duration</span>
+                        <span class="stat-value">3.2 days</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Signals</span>
+                        <span class="stat-value">142</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Win/Loss Ratio</span>
+                        <span class="stat-value green">3.5:1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Last Updated</span>
+                        <span class="stat-value">2 hours ago</span>
+                    </div>
+                </div>
+                
+                <!-- Trader Info -->
+                <div class="trader-info">
+                    <h2 class="section-title"><i class="fas fa-user-tie"></i> Signal Provider</h2>
+                    <div class="trader-header">
+                        <div class="trader-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div class="trader-name">Alexandra Chen</div>
+                            <div class="trader-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                4.7/5.0
+                            </div>
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Senior Forex Analyst with 8+ years experience specializing in EUR/USD and GBP/USD pairs.</p>
+                    
+                    <div class="trader-stats">
+                        <div class="trader-stat">
+                            <div class="trader-stat-value green">87%</div>
+                            <div class="trader-stat-label">Accuracy Rate</div>
+                        </div>
+                        <div class="trader-stat">
+                            <div class="trader-stat-value">312</div>
+                            <div class="trader-stat-label">Signals Posted</div>
+                        </div>
+                        <div class="trader-stat">
+                            <div class="trader-stat-value">2.1k</div>
+                            <div class="trader-stat-label">Followers</div>
+                        </div>
+                        <div class="trader-stat">
+                            <div class="trader-stat-value green">4.8</div>
+                            <div class="trader-stat-label">Avg. Rating</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Related Signals -->
+                <div class="signal-stats">
+                    <h2 class="section-title"><i class="fas fa-link"></i> Related Signals</h2>
+                    <div class="stat-item">
+                        <span>GBP/USD Buy</span>
+                        <span class="stat-value green">Active</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>USD/JPY Sell</span>
+                        <span class="stat-value red">Closed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>AUD/USD Buy</span>
+                        <span class="stat-value green">Active</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>EUR/GBP Buy</span>
+                        <span class="stat-value">Pending</span>
+                    </div>
+                </div>
+                
+                <!-- Risk Warning -->
+                <div class="risk-warning">
+                    <div class="warning-header">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Risk Warning</h3>
+                    </div>
+                    <div class="warning-content">
+                        <p>Trading foreign exchange on margin carries a high level of risk and may not be suitable for all investors. Past performance is not indicative of future results. The high degree of leverage can work against you as well as for you.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#">About</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+                <a href="#">Help Center</a>
+            </div>
+            <p>&copy; 2023 TradingView. All trading signals are for informational purposes only. Trading involves risk.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize Chart
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        
+        // Generate sample price data
+        const labels = [];
+        const priceData = [];
+        let currentPrice = 1.0800;
+        
+        for (let i = 0; i < 50; i++) {
+            labels.push('');
+            const change = (Math.random() - 0.5) * 0.003;
+            currentPrice += change;
+            priceData.push(currentPrice);
+        }
+        
+        // Mark signal entry point (last data point)
+        const entryPrice = priceData[priceData.length - 1];
+        const entryIndex = priceData.length - 1;
+        
+        // Create chart
+        const priceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'EUR/USD',
+                        data: priceData,
+                        borderColor: '#0096e6',
+                        backgroundColor: 'rgba(0, 150, 230, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0
+                    },
+                    {
+                        label: 'Signal Entry',
+                        data: Array(priceData.length).fill(null).map((val, index) => index === entryIndex ? entryPrice : null),
+                        borderColor: '#00ab55',
+                        backgroundColor: '#00ab55',
+                        borderWidth: 2,
+                        pointRadius: 6,
+                        pointBackgroundColor: '#00ab55',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        showLine: false
+                    },
+                    {
+                        label: 'Take Profit',
+                        data: Array(priceData.length).fill(entryPrice + 0.0125),
+                        borderColor: 'rgba(0, 171, 85, 0.5)',
+                        borderWidth: 1,
+                        borderDash: [5, 5],
+                        fill: false,
+                        pointRadius: 0
+                    },
+                    {
+                        label: 'Stop Loss',
+                        data: Array(priceData.length).fill(entryPrice - 0.0075),
+                        borderColor: 'rgba(231, 81, 90, 0.5)',
+                        borderWidth: 1,
+                        borderDash: [5, 5],
+                        fill: false,
+                        pointRadius: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#e0e6ed',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                        titleColor: '#e0e6ed',
+                        bodyColor: '#e0e6ed',
+                        borderColor: '#1b2e4b',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y.toFixed(5);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#888ea8'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#888ea8',
+                            callback: function(value) {
+                                return value.toFixed(4);
+                            }
+                        }
+                    }
+                },
+                interaction: {
+                    intersect: false,
+                    mode: 'nearest'
+                }
+            }
+        });
+        
+        // Timeframe selector functionality
+        const timeframes = document.querySelectorAll('.timeframe');
+        timeframes.forEach(timeframe => {
+            timeframe.addEventListener('click', function() {
+                timeframes.forEach(tf => tf.classList.remove('active'));
+                this.classList.add('active');
+                
+                // In a real app, this would update the chart with new timeframe data
+                console.log(`Switched to ${this.textContent} timeframe`);
+            });
+        });
+        
+        // Toggle signal save
+        const saveBtn = document.querySelector('.btn-outline');
+        let isSaved = false;
+        
+        saveBtn.addEventListener('click', function() {
+            isSaved = !isSaved;
+            const icon = this.querySelector('i');
+            if (isSaved) {
+                icon.className = 'fas fa-star';
+                this.innerHTML = '<i class="fas fa-star"></i> Saved';
+                // Add animation
+                this.classList.add('signal-entry');
+                setTimeout(() => {
+                    this.classList.remove('signal-entry');
+                }, 2000);
+            } else {
+                icon.className = 'far fa-star';
+                this.innerHTML = '<i class="far fa-star"></i> Save';
+            }
+        });
+        
+        // Set alert button
+        const alertBtn = document.querySelector('.btn-primary:nth-child(2)');
+        alertBtn.addEventListener('click', function() {
+            alert('Alert set for EUR/USD at target price levels. You will be notified when price approaches these levels.');
+        });
+        
+        // Simulate price update every 5 seconds
+        setInterval(() => {
+            // Add a new data point with slight random movement
+            const lastPrice = priceData[priceData.length - 1];
+            const change = (Math.random() - 0.5) * 0.0005;
+            const newPrice = lastPrice + change;
+            
+            // Update chart data
+            priceData.push(newPrice);
+            priceData.shift(); // Remove first element
+            
+            // Update datasets
+            priceChart.data.datasets[0].data = priceData;
+            priceChart.data.datasets[1].data[priceData.length - 1] = entryPrice;
+            
+            // Update chart
+            priceChart.update('none');
+            
+            // Update entry price display (only if it's changed significantly)
+            if (Math.abs(newPrice - entryPrice) > 0.0005) {
+                document.querySelector('.detail-card:nth-child(1) .detail-value').textContent = newPrice.toFixed(5);
+            }
+        }, 5000);
+        
+        // Initialize tooltips for stat items
+        const statItems = document.querySelectorAll('.stat-item');
+        statItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = 'transparent';
+            });
+        });
+    </script>
+</body>
+</html>

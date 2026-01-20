@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Dashboard | CryptoSecure Wallet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0a0e17;
+            color: #e2e8f0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 25px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 26px;
+            font-weight: 700;
+            color: #00d4aa;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 30px;
+        }
+        
+        .wallet-address {
+            display: flex;
+            align-items: center;
+            background-color: #1a2236;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .wallet-address:hover {
+            background-color: #222d47;
+        }
+        
+        .wallet-address i {
+            margin-right: 10px;
+            color: #00d4aa;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .notification-btn {
+            background: none;
+            border: none;
+            color: #a0aec0;
+            font-size: 20px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ed8936;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4aa, #0099ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 25px;
+        }
+        
+        /* Wallet Overview */
+        .wallet-overview {
+            background: linear-gradient(135deg, #1a2236 0%, #222d47 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 1px solid #2d3748;
+        }
+        
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .wallet-title h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .wallet-title p {
+            color: #a0aec0;
+            font-size: 14px;
+        }
+        
+        .balance-amount {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, #00d4aa, #0099ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .balance-change {
+            font-size: 16px;
+            color: #00d4aa;
+            display: flex;
+            align-items: center;
+        }
+        
+        .balance-change.red {
+            color: #f56565;
+        }
+        
+        .balance-change i {
+            margin-right: 5px;
+        }
+        
+        .wallet-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2d3748;
+            border-radius: 15px;
+            padding: 20px 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background-color: rgba(0, 212, 170, 0.1);
+            border-color: #00d4aa;
+            transform: translateY(-3px);
+        }
+        
+        .action-btn i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #00d4aa;
+        }
+        
+        .action-btn span {
+            font-weight: 600;
+        }
+        
+        /* Assets Section */
+        .assets-section {
+            background-color: #1a2236;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #2d3748;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .view-all {
+            color: #00d4aa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .view-all:hover {
+            text-decoration: underline;
+        }
+        
+        .assets-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .assets-table th {
+            text-align: left;
+            padding: 15px 10px;
+            color: #a0aec0;
+            font-weight: 600;
+            font-size: 14px;
+            border-bottom: 1px solid #2d3748;
+        }
+        
+        .assets-table td {
+            padding: 18px 10px;
+            border-bottom: 1px solid #2d3748;
+        }
+        
+        .asset-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .asset-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .btc { background-color: rgba(247, 147, 26, 0.2); color: #f7931a; }
+        .eth { background-color: rgba(98, 126, 234, 0.2); color: #627eea; }
+        .sol { background-color: rgba(0, 213, 255, 0.2); color: #00d5ff; }
+        .ada { background-color: rgba(52, 120, 246, 0.2); color: #3478f6; }
+        .dot { background-color: rgba(230, 0, 122, 0.2); color: #e6007a; }
+        
+        .asset-name h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .asset-name span {
+            color: #a0aec0;
+            font-size: 14px;
+        }
+        
+        .asset-price {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .asset-change {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .change-positive {
+            color: #00d4aa;
+        }
+        
+        .change-negative {
+            color: #f56565;
+        }
+        
+        .asset-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .asset-action-btn {
+            background: none;
+            border: 1px solid #2d3748;
+            color: #a0aec0;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .asset-action-btn:hover {
+            background-color: rgba(0, 212, 170, 0.1);
+            color: #00d4aa;
+            border-color: #00d4aa;
+        }
+        
+        /* Chart Section */
+        .chart-section {
+            background-color: #1a2236;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #2d3748;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        /* Recent Transactions */
+        .transactions-section {
+            background-color: #1a2236;
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid #2d3748;
+        }
+        
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #2d3748;
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+        
+        .transaction-received { background-color: rgba(0, 212, 170, 0.2); color: #00d4aa; }
+        .transaction-sent { background-color: rgba(245, 101, 101, 0.2); color: #f56565; }
+        .transaction-swap { background-color: rgba(237, 137, 54, 0.2); color: #ed8936; }
+        .transaction-buy { background-color: rgba(159, 122, 234, 0.2); color: #9f7aea; }
+        
+        .transaction-details {
+            flex: 1;
+        }
+        
+        .transaction-details h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .transaction-details p {
+            color: #a0aec0;
+            font-size: 14px;
+        }
+        
+        .transaction-amount {
+            font-weight: 600;
+            font-size: 16px;
+            text-align: right;
+        }
+        
+        .amount-positive {
+            color: #00d4aa;
+        }
+        
+        .amount-negative {
+            color: #f56565;
+        }
+        
+        /* Quick Actions Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .qr-card {
+            background: linear-gradient(135deg, #1a2236 0%, #222d47 100%);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid #2d3748;
+        }
+        
+        .qr-card h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .qr-code {
+            width: 180px;
+            height: 180px;
+            background-color: white;
+            border-radius: 10px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a0e17;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .wallet-address-small {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            word-break: break-all;
+        }
+        
+        .security-card {
+            background-color: #1a2236;
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid #2d3748;
+        }
+        
+        .security-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 0;
+            border-bottom: 1px solid #2d3748;
+        }
+        
+        .security-item:last-child {
+            border-bottom: none;
+        }
+        
+        .security-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .security-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: rgba(0, 212, 170, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00d4aa;
+            font-size: 18px;
+        }
+        
+        .security-details h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .security-details p {
+            color: #a0aec0;
+            font-size: 14px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #2d3748;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #00d4aa;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+        
+        .connect-card {
+            background: linear-gradient(135deg, #1a2236 0%, #222d47 100%);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid #2d3748;
+        }
+        
+        .connect-card h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .connect-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .connect-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .connect-btn:hover {
+            background-color: rgba(0, 212, 170, 0.1);
+            border-color: #00d4aa;
+        }
+        
+        .connect-btn i {
+            font-size: 24px;
+            color: #00d4aa;
+        }
+        
+        .connect-btn span {
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #2d3748;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #a0aec0;
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .footer-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #00d4aa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .wallet-actions {
+                flex-wrap: wrap;
+            }
+            
+            .action-btn {
+                min-width: 120px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .balance-amount {
+                font-size: 32px;
+            }
+            
+            .assets-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .asset-actions {
+                flex-direction: column;
+            }
+            
+            .footer {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a2236;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #00d4aa;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00b894;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-wallet"></i>
+                CryptoSecure Wallet
+            </div>
+            <div class="wallet-address" id="copyAddress">
+                <i class="fas fa-copy"></i>
+                <span>0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b</span>
+            </div>
+            <div class="user-actions">
+                <button class="notification-btn">
+                    <i class="far fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="user-profile">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600;">Alex Johnson</div>
+                        <div style="font-size: 12px; color: #a0aec0;">Tier 2 Verified</div>
+                    </div>
+                    <i class="fas fa-chevron-down" style="margin-left: 5px;"></i>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Wallet Overview -->
+                <div class="wallet-overview fade-in">
+                    <div class="wallet-header">
+                        <div class="wallet-title">
+                            <h2>Total Portfolio Balance</h2>
+                            <p>Across all assets</p>
+                        </div>
+                        <div class="wallet-balance">
+                            <div class="balance-amount">$42,689.34</div>
+                            <div class="balance-change">
+                                <i class="fas fa-arrow-up"></i>
+                                +$1,245.32 (3.01%) today
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wallet-actions">
+                        <div class="action-btn" id="sendBtn">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>Send</span>
+                        </div>
+                        <div class="action-btn" id="receiveBtn">
+                            <i class="fas fa-qrcode"></i>
+                            <span>Receive</span>
+                        </div>
+                        <div class="action-btn" id="buyBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Buy</span>
+                        </div>
+                        <div class="action-btn" id="swapBtn">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Swap</span>
+                        </div>
+                        <div class="action-btn" id="stakeBtn">
+                            <i class="fas fa-coins"></i>
+                            <span>Stake</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Assets -->
+                <div class="assets-section fade-in">
+                    <div class="section-header">
+                        <h3 class="section-title">My Assets</h3>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    
+                    <table class="assets-table">
+                        <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>Balance</th>
+                                <th>Price</th>
+                                <th>24h Change</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="asset-info">
+                                        <div class="asset-icon btc">
+                                            <i class="fab fa-bitcoin"></i>
+                                        </div>
+                                        <div class="asset-name">
+                                            <h4>Bitcoin</h4>
+                                            <span>BTC</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="asset-balance">
+                                        <div class="asset-price">0.5234 BTC</div>
+                                        <div style="color: #a0aec0; font-size: 14px;">$21,345.23</div>
+                                    </div>
+                                </td>
+                                <td class="asset-price">$40,785.32</td>
+                                <td>
+                                    <div class="asset-change change-positive">
+                                        <i class="fas fa-arrow-up"></i> 2.34%
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="asset-actions">
+                                        <button class="asset-action-btn" title="Send">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                        <button class="asset-action-btn" title="Receive">
+                                            <i class="fas fa-qrcode"></i>
+                                        </button>
+                                        <button class="asset-action-btn" title="Swap">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="asset-info">
+                                        <div class="asset-icon eth">
+                                            <i class="fab fa-ethereum"></i>
+                                        </div>
+                                        <div class="asset-name">
+                                            <h4>Ethereum</h4>
+                                            <span>ETH</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="asset-balance">
+                                        <div class="asset-price">4.892 ETH</div>
+                                        <div style="color: #a0aec0; font-size: 14px;">$14,892.41</div>
+                                    </div>
+                                </td>
+                                <td class="asset-price">$3,045.12</td>
+                                <td>
+                                    <div class="asset-change change-positive">
+                                        <i class="fas fa-arrow-up"></i> 1.78%
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="asset-actions">
+                                        <button class="asset-action-btn" title="Send">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                        <button class="asset-action-btn" title="Receive">
+                                            <i class="fas fa-qrcode"></i>
+                                        </button>
+                                        <button class="asset-action-btn" title="Swap">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="asset-info">
+                                        <div class="asset-icon sol">
+                                            <i class="fas fa-gem"></i>
+                                        </div>
+                                        <div class="asset-name">
+                                            <h4>Solana</h4>
+                                            <span>SOL</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="asset-balance">
+                                        <div class="asset-price">28.45 SOL</div>
+                                        <div style="color: #a0aec0; font-size: 14px;">$3,245.67</div>
+                                    </div>
+                                </td>
+                                <td class="asset-price">$114.08</td>
+                                <td>
+                                    <div class="asset-change change-negative">
+                                        <i class="fas fa-arrow-down"></i> 0.89%
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="asset-actions">
+                                        <button class="asset-action-btn" title="Send">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                        <button class="asset-action-btn" title="Receive">
+                                            <i class="fas fa-qrcode"></i>
+                                        </button>
+                                        <button class="asset-action-btn" title="Swap">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="asset-info">
+                                        <div class="asset-icon ada">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <div class="asset-name">
+                                            <h4>Cardano</h4>
+                                            <span>ADA</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="asset-balance">
+                                        <div class="asset-price">1,245 ADA</div>
+                                        <div style="color: #a0aec0; font-size: 14px;">$892.34</div>
+                                    </div>
+                                </td>
+                                <td class="asset-price">$0.716</td>
+                                <td>
+                                    <div class="asset-change change-positive">
+                                        <i class="fas fa-arrow-up"></i> 4.12%
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="asset-actions">
+                                        <button class="asset-action-btn" title="Send">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                        <button class="asset-action-btn" title="Receive">
+                                            <i class="fas fa-qrcode"></i>
+                                        </button>
+                                        <button class="asset-action-btn" title="Swap">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Portfolio Chart -->
+                <div class="chart-section fade-in">
+                    <div class="section-header">
+                        <h3 class="section-title">Portfolio Performance</h3>
+                        <div>
+                            <select style="background-color: #0a0e17; color: white; border: 1px solid #2d3748; padding: 8px 15px; border-radius: 8px;">
+                                <option>Last 7 days</option>
+                                <option>Last 30 days</option>
+                                <option>Last 90 days</option>
+                                <option>All time</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="portfolioChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Sidebar -->
+            <div class="sidebar">
+                <!-- QR Code Card -->
+                <div class="qr-card fade-in">
+                    <h3>Receive Crypto</h3>
+                    <div class="qr-code">
+                        <div style="text-align: center;">
+                            <div style="font-size: 36px; margin-bottom: 10px;">QR</div>
+                            <div>Scan to receive</div>
+                        </div>
+                    </div>
+                    <div class="wallet-address-small">0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b</div>
+                    <button class="action-btn" style="width: 100%; margin: 0;">
+                        <i class="fas fa-copy"></i>
+                        <span>Copy Address</span>
+                    </button>
+                </div>
+                
+                <!-- Recent Transactions -->
+                <div class="transactions-section fade-in">
+                    <div class="section-header">
+                        <h3 class="section-title">Recent Transactions</h3>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    
+                    <div class="transaction-list">
+                        <div class="transaction-item">
+                            <div class="transaction-icon transaction-received">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Received Bitcoin</h4>
+                                <p>2 hours ago • From 0x3f5...8c2</p>
+                            </div>
+                            <div class="transaction-amount amount-positive">
+                                +0.125 BTC
+                            </div>
+                        </div>
+                        
+                        <div class="transaction-item">
+                            <div class="transaction-icon transaction-sent">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Sent Ethereum</h4>
+                                <p>5 hours ago • To 0x9a1...4e7</p>
+                            </div>
+                            <div class="transaction-amount amount-negative">
+                                -1.5 ETH
+                            </div>
+                        </div>
+                        
+                        <div class="transaction-item">
+                            <div class="transaction-icon transaction-swap">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Swapped SOL to ADA</h4>
+                                <p>Yesterday • Automated swap</p>
+                            </div>
+                            <div class="transaction-amount">
+                                28 SOL → 1,245 ADA
+                            </div>
+                        </div>
+                        
+                        <div class="transaction-item">
+                            <div class="transaction-icon transaction-buy">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Bought Ethereum</h4>
+                                <p>2 days ago • Credit card</p>
+                            </div>
+                            <div class="transaction-amount amount-positive">
+                                +2.3 ETH
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security Settings -->
+                <div class="security-card fade-in">
+                    <h3 class="section-title">Security Settings</h3>
+                    
+                    <div class="security-item">
+                        <div class="security-info">
+                            <div class="security-icon">
+                                <i class="fas fa-fingerprint"></i>
+                            </div>
+                            <div class="security-details">
+                                <h4>Biometric Login</h4>
+                                <p>Use fingerprint or face ID</p>
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="security-item">
+                        <div class="security-info">
+                            <div class="security-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="security-details">
+                                <h4>2FA Authentication</h4>
+                                <p>Require 2FA for transfers</p>
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="security-item">
+                        <div class="security-info">
+                            <div class="security-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="security-details">
+                                <h4>Transaction Alerts</h4>
+                                <p>Notify for all transactions</p>
+                            </div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Connect Wallet -->
+                <div class="connect-card fade-in">
+                    <h3>Connect Wallet</h3>
+                    <div class="connect-buttons">
+                        <div class="connect-btn">
+                            <i class="fab fa-metamask"></i>
+                            <span>MetaMask</span>
+                        </div>
+                        <div class="connect-btn">
+                            <i class="fas fa-plug"></i>
+                            <span>WalletConnect</span>
+                        </div>
+                        <div class="connect-btn">
+                            <i class="fab fa-bitcoin"></i>
+                            <span>Coinbase Wallet</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div>
+                <div class="logo" style="font-size: 18px; margin-bottom: 10px;">
+                    <i class="fas fa-wallet"></i>
+                    CryptoSecure Wallet
+                </div>
+                <div style="font-size: 12px;">Non-custodial wallet • Your keys, your crypto</div>
+            </div>
+            <div class="footer-links">
+                <a href="#">Support</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">About Us</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize Portfolio Chart
+        const ctx = document.getElementById('portfolioChart').getContext('2d');
+        
+        // Generate sample portfolio data
+        const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
+        const portfolioData = [28000, 29500, 32000, 31000, 35000, 39000, 42689];
+        
+        // Create chart
+        const portfolioChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Portfolio Value',
+                    data: portfolioData,
+                    borderColor: '#00d4aa',
+                    backgroundColor: 'rgba(0, 212, 170, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#00d4aa',
+                    pointBorderColor: '#0a0e17',
+                    pointBorderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(26, 34, 54, 0.9)',
+                        titleColor: '#e2e8f0',
+                        bodyColor: '#e2e8f0',
+                        borderColor: '#00d4aa',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return `$${context.parsed.y.toLocaleString()}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#a0aec0'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#a0aec0',
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Copy wallet address functionality
+        const copyAddressBtn = document.getElementById('copyAddress');
+        const copyAddressSmallBtn = document.querySelector('.qr-card .action-btn');
+        
+        function copyWalletAddress() {
+            const address = '0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b';
+            navigator.clipboard.writeText(address).then(() => {
+                // Show feedback
+                const originalText = copyAddressBtn.innerHTML;
+                copyAddressBtn.innerHTML = '<i class="fas fa-check"></i> <span>Address Copied!</span>';
+                copyAddressBtn.style.backgroundColor = 'rgba(0, 212, 170, 0.2)';
+                
+                setTimeout(() => {
+                    copyAddressBtn.innerHTML = originalText;
+                    copyAddressBtn.style.backgroundColor = '';
+                }, 2000);
+            });
+        }
+        
+        copyAddressBtn.addEventListener('click', copyWalletAddress);
+        copyAddressSmallBtn.addEventListener('click', copyWalletAddress);
+        
+        // Action buttons functionality
+        const actionButtons = document.querySelectorAll('.action-btn');
+        actionButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const action = this.querySelector('span').textContent;
+                alert(`${action} functionality would open here.`);
+            });
+        });
+        
+        // Asset action buttons
+        const assetActionButtons = document.querySelectorAll('.asset-action-btn');
+        assetActionButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const title = this.getAttribute('title');
+                const row = this.closest('tr');
+                const assetName = row.querySelector('.asset-name h4').textContent;
+                alert(`${title} ${assetName} functionality would open here.`);
+            });
+        });
+        
+        // Connect wallet buttons
+        const connectButtons = document.querySelectorAll('.connect-btn');
+        connectButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const walletName = this.querySelector('span').textContent;
+                alert(`Connecting to ${walletName}...`);
+            });
+        });
+        
+        // Toggle switches
+        const toggleSwitches = document.querySelectorAll('.toggle-switch input');
+        toggleSwitches.forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const setting = this.closest('.security-item').querySelector('h4').textContent;
+                const status = this.checked ? 'enabled' : 'disabled';
+                console.log(`${setting} ${status}`);
+            });
+        });
+        
+        // Notification button
+        const notificationBtn = document.querySelector('.notification-btn');
+        notificationBtn.addEventListener('click', function() {
+            alert('You have 3 new notifications:\n1. BTC received (2 hours ago)\n2. ETH transaction confirmed\n3. Security update available');
+        });
+        
+        // Simulate live price updates
+        function updatePrices() {
+            const priceElements = document.querySelectorAll('.asset-price');
+            const changeElements = document.querySelectorAll('.asset-change');
+            
+            // Small random price changes
+            priceElements.forEach((el, index) => {
+                if (index % 2 === 0) { // Only update price column, not balance column
+                    const currentPrice = parseFloat(el.textContent.replace('$', '').replace(',', ''));
+                    const change = (Math.random() - 0.5) * currentPrice * 0.01;
+                    const newPrice = currentPrice + change;
+                    el.textContent = '$' + newPrice.toFixed(2);
+                }
+            });
+            
+            // Update change indicators
+            changeElements.forEach(el => {
+                const change = (Math.random() - 0.5) * 3;
+                const isPositive = change >= 0;
+                const icon = isPositive ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>';
+                el.innerHTML = `${icon} ${Math.abs(change).toFixed(2)}%`;
+                el.className = `asset-change ${isPositive ? 'change-positive' : 'change-negative'}`;
+            });
+            
+            // Update total balance (small random change)
+            const balanceElement = document.querySelector('.balance-amount');
+            const changeElement = document.querySelector('.balance-change');
+            const currentBalance = parseFloat(balanceElement.textContent.replace('$', '').replace(',', ''));
+            const balanceChange = (Math.random() - 0.3) * currentBalance * 0.005;
+            const newBalance = currentBalance + balanceChange;
+            const percentChange = (balanceChange / currentBalance * 100).toFixed(2);
+            const isPositive = balanceChange >= 0;
+            
+            balanceElement.textContent = '$' + newBalance.toFixed(2);
+            changeElement.innerHTML = `<i class="fas fa-arrow-${isPositive ? 'up' : 'down'}"></i> $${isPositive ? '+' : ''}${balanceChange.toFixed(2)} (${isPositive ? '+' : ''}${percentChange}%) today`;
+            changeElement.className = `balance-change ${isPositive ? '' : 'red'}`;
+        }
+        
+        // Update prices every 10 seconds
+        setInterval(updatePrices, 10000);
+        
+        // Add fade-in animation to elements when they come into view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all sections
+        document.querySelectorAll('.wallet-overview, .assets-section, .chart-section, .qr-card, .transactions-section, .security-card, .connect-card').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

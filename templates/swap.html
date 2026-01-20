@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swap | Decentralized Exchange</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8b5cf6;
+            --primary-light: #ede9fe;
+            --primary-dark: #7c3aed;
+            --secondary-color: #0f172a;
+            --light-gray: #f8fafc;
+            --medium-gray: #e2e8f0;
+            --dark-gray: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --card-bg: #ffffff;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 40px rgba(139, 92, 246, 0.15);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f3e8ff 0%, #e0e7ff 100%);
+            color: #334155;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .logo-subtext {
+            font-size: 12px;
+            color: var(--dark-gray);
+            margin-left: 5px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-btn {
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--secondary-color);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-btn:hover {
+            background: white;
+            box-shadow: var(--shadow);
+        }
+
+        .wallet-btn {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .wallet-btn:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Main Container */
+        .swap-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Swap Card */
+        .swap-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-xl);
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .swap-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .swap-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .swap-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .swap-action-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--light-gray);
+            border: 1px solid var(--medium-gray);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .swap-action-btn:hover {
+            background: white;
+            box-shadow: var(--shadow);
+        }
+
+        .swap-action-btn.active {
+            background: var(--primary-light);
+            color: var(--primary-color);
+            border-color: var(--primary-light);
+        }
+
+        /* Swap Form */
+        .swap-form {
+            position: relative;
+        }
+
+        .swap-input-group {
+            background: var(--light-gray);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        .swap-input-group:focus-within {
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .input-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .input-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .balance {
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+
+        .balance-value {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-left: 5px;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .amount-input {
+            flex: 1;
+            background: none;
+            border: none;
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            outline: none;
+            max-width: 70%;
+        }
+
+        .amount-input::placeholder {
+            color: var(--medium-gray);
+        }
+
+        .token-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            background: white;
+            border: 1px solid var(--medium-gray);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .token-selector:hover {
+            background: var(--light-gray);
+        }
+
+        .token-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            font-size: 14px;
+        }
+
+        .token-icon.eth {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        }
+
+        .token-icon.usdc {
+            background: linear-gradient(135deg, #2775ca, #3b82f6);
+        }
+
+        .token-icon.dai {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        }
+
+        .token-icon.wbtc {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .token-symbol {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .token-selector i {
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+
+        /* Swap Direction */
+        .swap-direction {
+            position: relative;
+            height: 40px;
+            margin: -10px 0;
+            z-index: 2;
+        }
+
+        .swap-arrow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            background: white;
+            border: 1px solid var(--medium-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            z-index: 3;
+        }
+
+        .swap-arrow:hover {
+            background: var(--primary-light);
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.2);
+        }
+
+        .swap-arrow i {
+            font-size: 18px;
+        }
+
+        /* Swap Details */
+        .swap-details {
+            background: var(--light-gray);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+            padding-top: 12px;
+            border-top: 1px solid var(--medium-gray);
+        }
+
+        .detail-label {
+            font-size: 14px;
+            color: var(--dark-gray);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+
+        .detail-value.highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Swap Button */
+        .swap-button {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .swap-button:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .swap-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Token List Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .token-modal {
+            background: white;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 420px;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .token-modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--dark-gray);
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--light-gray);
+        }
+
+        .modal-search {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--light-gray);
+            border: 1px solid var(--medium-gray);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--secondary-color);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .token-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .token-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 25px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .token-item:hover {
+            background: var(--light-gray);
+        }
+
+        .token-item.active {
+            background: var(--primary-light);
+        }
+
+        .token-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .token-name {
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+
+        .token-balance {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        /* Recent Swaps */
+        .recent-swaps {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 25px;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .swaps-list {
+            list-style: none;
+        }
+
+        .swap-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .swap-item:last-child {
+            border-bottom: none;
+        }
+
+        .swap-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .swap-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+
+        .swap-details-small h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 4px;
+        }
+
+        .swap-details-small p {
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+
+        .swap-amount {
+            text-align: right;
+        }
+
+        .swap-amount .value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 4px;
+        }
+
+        .swap-amount .time {
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+
+        /* Slippage Settings */
+        .slippage-settings {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 25px;
+            margin-top: 25px;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            display: none;
+        }
+
+        .slippage-settings.active {
+            display: block;
+        }
+
+        .slippage-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .slippage-option {
+            flex: 1;
+            padding: 10px;
+            background: var(--light-gray);
+            border: 1px solid var(--medium-gray);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .slippage-option:hover {
+            background: white;
+        }
+
+        .slippage-option.active {
+            background: var(--primary-light);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .slippage-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .slippage-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 576px) {
+            body {
+                padding: 15px;
+            }
+            
+            .swap-card, .recent-swaps, .slippage-settings {
+                padding: 20px;
+            }
+            
+            .amount-input {
+                font-size: 28px;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">S</div>
+                <div>
+                    <div class="logo-text">Swap<span class="logo-subtext">Exchange</span></div>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <button class="header-btn" id="networkBtn">
+                    <i class="fas fa-ethernet"></i>
+                    <span>Ethereum</span>
+                </button>
+                <button class="header-btn wallet-btn" id="connectWallet">
+                    <i class="fas fa-wallet"></i>
+                    <span>Connect Wallet</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="swap-container">
+        <!-- Swap Card -->
+        <div class="swap-card animated">
+            <div class="swap-header">
+                <div class="swap-title">Swap Tokens</div>
+                <div class="swap-actions">
+                    <button class="swap-action-btn" id="settingsBtn" title="Settings">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button class="swap-action-btn" id="historyBtn" title="Transaction History">
+                        <i class="fas fa-history"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="swap-form">
+                <!-- From Token -->
+                <div class="swap-input-group" id="fromTokenGroup">
+                    <div class="input-header">
+                        <div class="input-label">From</div>
+                        <div class="balance">
+                            Balance: <span class="balance-value" id="fromBalance">2.145 ETH</span>
+                        </div>
+                    </div>
+                    <div class="input-container">
+                        <input type="number" class="amount-input" id="fromAmount" placeholder="0.0" min="0" step="any">
+                        <div class="token-selector" id="fromTokenSelector">
+                            <div class="token-icon eth">
+                                <i class="fab fa-ethereum"></i>
+                            </div>
+                            <div class="token-symbol">ETH</div>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Swap Direction -->
+                <div class="swap-direction">
+                    <div class="swap-arrow" id="swapDirection">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                </div>
+                
+                <!-- To Token -->
+                <div class="swap-input-group" id="toTokenGroup">
+                    <div class="input-header">
+                        <div class="input-label">To</div>
+                        <div class="balance">
+                            Balance: <span class="balance-value" id="toBalance">5,280.45 USDC</span>
+                        </div>
+                    </div>
+                    <div class="input-container">
+                        <input type="number" class="amount-input" id="toAmount" placeholder="0.0" min="0" step="any" readonly>
+                        <div class="token-selector" id="toTokenSelector">
+                            <div class="token-icon usdc">USDC</div>
+                            <div class="token-symbol">USDC</div>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Swap Details -->
+                <div class="swap-details">
+                    <div class="detail-row">
+                        <div class="detail-label">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Exchange Rate</span>
+                        </div>
+                        <div class="detail-value" id="exchangeRate">1 ETH = 2,450.67 USDC</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">
+                            <i class="fas fa-percentage"></i>
+                            <span>Slippage Tolerance</span>
+                        </div>
+                        <div class="detail-value" id="slippageTolerance">0.5%</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">
+                            <i class="fas fa-gas-pump"></i>
+                            <span>Network Fee</span>
+                        </div>
+                        <div class="detail-value" id="networkFee">~$12.50</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Minimum Received</span>
+                        </div>
+                        <div class="detail-value highlight" id="minimumReceived">2,425.45 USDC</div>
+                    </div>
+                </div>
+                
+                <!-- Swap Button -->
+                <button class="swap-button" id="swapButton">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Swap Tokens</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Slippage Settings (Hidden by default) -->
+        <div class="slippage-settings" id="slippageSettings">
+            <div class="section-title">
+                <i class="fas fa-sliders-h"></i>
+                <span>Slippage Settings</span>
+            </div>
+            <p style="font-size: 14px; color: var(--dark-gray); margin-bottom: 15px;">
+                Slippage is the difference between the expected price of a trade and the actual price at which the trade is executed.
+            </p>
+            <div class="slippage-options">
+                <div class="slippage-option" data-slippage="0.1">0.1%</div>
+                <div class="slippage-option active" data-slippage="0.5">0.5%</div>
+                <div class="slippage-option" data-slippage="1">1%</div>
+                <input type="number" class="slippage-input" id="customSlippage" placeholder="Custom" min="0" max="50" step="0.1">
+            </div>
+        </div>
+        
+        <!-- Recent Swaps -->
+        <div class="recent-swaps animated">
+            <div class="section-title">
+                <i class="fas fa-history"></i>
+                <span>Recent Swaps</span>
+            </div>
+            <ul class="swaps-list" id="recentSwapsList">
+                <!-- Populated by JavaScript -->
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Token Selection Modal -->
+    <div class="modal-overlay" id="tokenModal">
+        <div class="token-modal">
+            <div class="modal-header">
+                <div class="modal-title">Select a Token</div>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-search">
+                <input type="text" class="search-input" id="tokenSearch" placeholder="Search token name or address">
+            </div>
+            <div class="token-list" id="tokenList">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const fromTokenSelector = document.getElementById('fromTokenSelector');
+            const toTokenSelector = document.getElementById('toTokenSelector');
+            const fromAmountInput = document.getElementById('fromAmount');
+            const toAmountInput = document.getElementById('toAmount');
+            const swapDirection = document.getElementById('swapDirection');
+            const swapButton = document.getElementById('swapButton');
+            const connectWalletBtn = document.getElementById('connectWallet');
+            const settingsBtn = document.getElementById('settingsBtn');
+            const slippageSettings = document.getElementById('slippageSettings');
+            const tokenModal = document.getElementById('tokenModal');
+            const closeModal = document.getElementById('closeModal');
+            const tokenSearch = document.getElementById('tokenSearch');
+            const tokenList = document.getElementById('tokenList');
+            const recentSwapsList = document.getElementById('recentSwapsList');
+            
+            // State
+            let currentTokenSelector = null;
+            let fromToken = 'ETH';
+            let toToken = 'USDC';
+            let fromAmount = 0;
+            let toAmount = 0;
+            let exchangeRate = 2450.67; // 1 ETH = X USDC
+            let slippage = 0.5; // Percentage
+            let walletConnected = false;
+            
+            // Token data
+            const tokens = [
+                { symbol: 'ETH', name: 'Ethereum', balance: 2.145, iconClass: 'eth', iconType: 'icon', color: '#6366f1' },
+                { symbol: 'USDC', name: 'USD Coin', balance: 5280.45, iconClass: 'usdc', iconType: 'text', color: '#2775ca' },
+                { symbol: 'DAI', name: 'Dai Stablecoin', balance: 1250.20, iconClass: 'dai', iconType: 'text', color: '#f59e0b' },
+                { symbol: 'WBTC', name: 'Wrapped Bitcoin', balance: 0.045, iconClass: 'wbtc', iconType: 'icon', color: '#f59e0b' },
+                { symbol: 'USDT', name: 'Tether', balance: 3500.00, iconClass: 'usdc', iconType: 'text', color: '#26a17b' },
+                { symbol: 'UNI', name: 'Uniswap', balance: 15.5, iconClass: 'uni', iconType: 'icon', color: '#ff007a' },
+                { symbol: 'LINK', name: 'Chainlink', balance: 42.3, iconClass: 'link', iconType: 'icon', color: '#2a5ada' },
+                { symbol: 'AAVE', name: 'Aave', balance: 3.2, iconClass: 'aave', iconType: 'icon', color: '#b6509e' }
+            ];
+            
+            // Recent swaps data
+            const recentSwaps = [
+                { from: 'ETH', to: 'USDC', fromAmount: 0.5, toAmount: 1225.34, time: '2 mins ago' },
+                { from: 'DAI', to: 'ETH', fromAmount: 500, toAmount: 0.204, time: '15 mins ago' },
+                { from: 'USDC', to: 'WBTC', fromAmount: 3000, toAmount: 0.012, time: '1 hour ago' },
+                { from: 'ETH', to: 'UNI', fromAmount: 0.8, toAmount: 12.4, time: '3 hours ago' },
+                { from: 'USDT', to: 'LINK', fromAmount: 250, toAmount: 18.7, time: '5 hours ago' }
+            ];
+            
+            // Initialize
+            function init() {
+                updateBalances();
+                updateExchangeRate();
+                calculateSwap();
+                renderTokenList();
+                renderRecentSwaps();
+                setupEventListeners();
+            }
+            
+            // Setup event listeners
+            function setupEventListeners() {
+                // Token selection
+                fromTokenSelector.addEventListener('click', () => openTokenModal('from'));
+                toTokenSelector.addEventListener('click', () => openTokenModal('to'));
+                
+                // Amount input
+                fromAmountInput.addEventListener('input', handleFromAmountChange);
+                
+                // Swap direction
+                swapDirection.addEventListener('click', swapTokens);
+                
+                // Swap button
+                swapButton.addEventListener('click', executeSwap);
+                
+                // Connect wallet
+                connectWalletBtn.addEventListener('click', connectWallet);
+                
+                // Settings
+                settingsBtn.addEventListener('click', toggleSlippageSettings);
+                
+                // Modal
+                closeModal.addEventListener('click', closeTokenModal);
+                tokenModal.addEventListener('click', (e) => {
+                    if (e.target === tokenModal) closeTokenModal();
+                });
+                
+                // Token search
+                tokenSearch.addEventListener('input', filterTokenList);
+                
+                // Slippage options
+                document.querySelectorAll('.slippage-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        document.querySelectorAll('.slippage-option').forEach(opt => opt.classList.remove('active'));
+                        option.classList.add('active');
+                        slippage = parseFloat(option.getAttribute('data-slippage'));
+                        document.getElementById('slippageTolerance').textContent = `${slippage}%`;
+                        calculateSwap();
+                    });
+                });
+                
+                // Custom slippage input
+                document.getElementById('customSlippage').addEventListener('change', function() {
+                    const value = parseFloat(this.value);
+                    if (!isNaN(value) && value >= 0 && value <= 50) {
+                        slippage = value;
+                        document.getElementById('slippageTolerance').textContent = `${slippage}%`;
+                        document.querySelectorAll('.slippage-option').forEach(opt => opt.classList.remove('active'));
+                        calculateSwap();
+                    }
+                });
+            }
+            
+            // Update token balances display
+            function updateBalances() {
+                const fromTokenData = tokens.find(t => t.symbol === fromToken);
+                const toTokenData = tokens.find(t => t.symbol === toToken);
+                
+                if (fromTokenData) {
+                    document.getElementById('fromBalance').textContent = `${fromTokenData.balance.toFixed(3)} ${fromToken}`;
+                }
+                
+                if (toTokenData) {
+                    document.getElementById('toBalance').textContent = `${toTokenData.balance.toFixed(2)} ${toToken}`;
+                }
+            }
+            
+            // Update exchange rate display
+            function updateExchangeRate() {
+                // In a real app, this would fetch from an API
+                document.getElementById('exchangeRate').textContent = `1 ${fromToken} = ${exchangeRate.toFixed(2)} ${toToken}`;
+            }
+            
+            // Calculate swap amounts
+            function calculateSwap() {
+                fromAmount = parseFloat(fromAmountInput.value) || 0;
+                
+                if (fromAmount > 0) {
+                    // Calculate to amount based on exchange rate
+                    toAmount = fromAmount * exchangeRate;
+                    
+                    // Apply slippage for minimum received
+                    const minimumReceived = toAmount * (1 - slippage / 100);
+                    
+                    // Update UI
+                    toAmountInput.value = toAmount.toFixed(2);
+                    document.getElementById('minimumReceived').textContent = `${minimumReceived.toFixed(2)} ${toToken}`;
+                    
+                    // Update network fee (simulated)
+                    const networkFee = fromAmount * 0.0025; // 0.25% fee
+                    document.getElementById('networkFee').textContent = `~$${(networkFee * exchangeRate).toFixed(2)}`;
+                    
+                    // Enable/disable swap button
+                    const fromTokenData = tokens.find(t => t.symbol === fromToken);
+                    if (fromTokenData && fromAmount <= fromTokenData.balance) {
+                        swapButton.disabled = false;
+                        swapButton.innerHTML = `<i class="fas fa-exchange-alt"></i><span>Swap Tokens</span>`;
+                    } else {
+                        swapButton.disabled = true;
+                        swapButton.innerHTML = `<i class="fas fa-exclamation-circle"></i><span>Insufficient Balance</span>`;
+                    }
+                } else {
+                    toAmountInput.value = '';
+                    document.getElementById('minimumReceived').textContent = `0 ${toToken}`;
+                    document.getElementById('networkFee').textContent = '~$0.00';
+                    swapButton.disabled = true;
+                    swapButton.innerHTML = `<i class="fas fa-exchange-alt"></i><span>Enter an Amount</span>`;
+                }
+            }
+            
+            // Handle from amount change
+            function handleFromAmountChange() {
+                calculateSwap();
+            }
+            
+            // Swap tokens (reverse direction)
+            function swapTokens() {
+                // Swap tokens
+                [fromToken, toToken] = [toToken, fromToken];
+                
+                // Update selectors
+                updateTokenSelectors();
+                
+                // Update exchange rate (inverse)
+                exchangeRate = 1 / exchangeRate;
+                
+                // Swap amounts
+                if (fromAmount > 0) {
+                    [fromAmount, toAmount] = [toAmount, fromAmount];
+                    fromAmountInput.value = fromAmount.toFixed(2);
+                    toAmountInput.value = toAmount.toFixed(2);
+                }
+                
+                // Update UI
+                updateBalances();
+                updateExchangeRate();
+                calculateSwap();
+                
+                // Animation
+                swapDirection.innerHTML = `<i class="fas fa-arrow-up"></i>`;
+                setTimeout(() => {
+                    swapDirection.innerHTML = `<i class="fas fa-arrow-down"></i>`;
+                }, 300);
+            }
+            
+            // Update token selectors UI
+            function updateTokenSelectors() {
+                const fromTokenData = tokens.find(t => t.symbol === fromToken);
+                const toTokenData = tokens.find(t => t.symbol === toToken);
+                
+                // Update from token selector
+                if (fromTokenData) {
+                    fromTokenSelector.innerHTML = `
+                        <div class="token-icon ${fromTokenData.iconClass}">
+                            ${fromTokenData.iconType === 'icon' ? `<i class="fab fa-ethereum"></i>` : fromTokenData.symbol}
+                        </div>
+                        <div class="token-symbol">${fromTokenData.symbol}</div>
+                        <i class="fas fa-chevron-down"></i>
+                    `;
+                }
+                
+                // Update to token selector
+                if (toTokenData) {
+                    toTokenSelector.innerHTML = `
+                        <div class="token-icon ${toTokenData.iconClass}">
+                            ${toTokenData.iconType === 'icon' ? `<i class="fab fa-ethereum"></i>` : toTokenData.symbol}
+                        </div>
+                        <div class="token-symbol">${toTokenData.symbol}</div>
+                        <i class="fas fa-chevron-down"></i>
+                    `;
+                }
+            }
+            
+            // Open token selection modal
+            function openTokenModal(selectorType) {
+                currentTokenSelector = selectorType;
+                tokenModal.classList.add('active');
+                tokenSearch.value = '';
+                filterTokenList();
+            }
+            
+            // Close token selection modal
+            function closeTokenModal() {
+                tokenModal.classList.remove('active');
+                currentTokenSelector = null;
+            }
+            
+            // Render token list in modal
+            function renderTokenList() {
+                tokenList.innerHTML = '';
+                
+                tokens.forEach(token => {
+                    const isActive = token.symbol === fromToken || token.symbol === toToken;
+                    
+                    const tokenItem = document.createElement('div');
+                    tokenItem.className = `token-item ${isActive ? 'active' : ''}`;
+                    tokenItem.setAttribute('data-symbol', token.symbol);
+                    
+                    tokenItem.innerHTML = `
+                        <div class="token-info">
+                            <div class="token-icon ${token.iconClass}">
+                                ${token.iconType === 'icon' ? `<i class="fab fa-ethereum"></i>` : token.symbol}
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; color: var(--secondary-color);">${token.symbol}</div>
+                                <div class="token-name">${token.name}</div>
+                            </div>
+                        </div>
+                        <div class="token-balance">${token.balance.toFixed(2)}</div>
+                    `;
+                    
+                    tokenItem.addEventListener('click', () => selectToken(token.symbol));
+                    tokenList.appendChild(tokenItem);
+                });
+            }
+            
+            // Filter token list based on search
+            function filterTokenList() {
+                const searchTerm = tokenSearch.value.toLowerCase();
+                const tokenItems = tokenList.querySelectorAll('.token-item');
+                
+                tokenItems.forEach(item => {
+                    const symbol = item.getAttribute('data-symbol').toLowerCase();
+                    const isActive = symbol === fromToken.toLowerCase() || symbol === toToken.toLowerCase();
+                    
+                    if (symbol.includes(searchTerm) || searchTerm === '') {
+                        item.style.display = 'flex';
+                        if (isActive) {
+                            item.classList.add('active');
+                        } else {
+                            item.classList.remove('active');
+                        }
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Select token from modal
+            function selectToken(symbol) {
+                if (currentTokenSelector === 'from') {
+                    // Don't allow same token in both sides
+                    if (symbol === toToken) {
+                        alert('Cannot select the same token for both sides');
+                        return;
+                    }
+                    fromToken = symbol;
+                } else if (currentTokenSelector === 'to') {
+                    // Don't allow same token in both sides
+                    if (symbol === fromToken) {
+                        alert('Cannot select the same token for both sides');
+                        return;
+                    }
+                    toToken = symbol;
+                }
+                
+                // Update exchange rate (simulate different rates for different pairs)
+                updateExchangeRateForPair();
+                
+                // Update UI
+                updateTokenSelectors();
+                updateBalances();
+                calculateSwap();
+                closeTokenModal();
+            }
+            
+            // Update exchange rate based on selected pair
+            function updateExchangeRateForPair() {
+                // Simulate different exchange rates for different token pairs
+                const rates = {
+                    'ETH-USDC': 2450.67,
+                    'ETH-DAI': 2430.50,
+                    'ETH-WBTC': 0.054,
+                    'USDC-ETH': 0.000408,
+                    'USDC-DAI': 0.999,
+                    'USDC-WBTC': 0.000022,
+                    'DAI-ETH': 0.000411,
+                    'DAI-USDC': 1.001,
+                    'WBTC-ETH': 18.52,
+                    'WBTC-USDC': 45420
+                };
+                
+                const pair = `${fromToken}-${toToken}`;
+                const reversePair = `${toToken}-${fromToken}`;
+                
+                if (rates[pair]) {
+                    exchangeRate = rates[pair];
+                } else if (rates[reversePair]) {
+                    exchangeRate = 1 / rates[reversePair];
+                } else {
+                    // Default rate
+                    exchangeRate = fromToken === 'ETH' ? 2450.67 : 0.000408;
+                }
+                
+                updateExchangeRate();
+            }
+            
+            // Render recent swaps
+            function renderRecentSwaps() {
+                recentSwapsList.innerHTML = '';
+                
+                recentSwaps.forEach(swap => {
+                    const swapItem = document.createElement('li');
+                    swapItem.className = 'swap-item';
+                    
+                    swapItem.innerHTML = `
+                        <div class="swap-info">
+                            <div class="swap-icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <div class="swap-details-small">
+                                <h4>${swap.from} → ${swap.to}</h4>
+                                <p>${swap.time}</p>
+                            </div>
+                        </div>
+                        <div class="swap-amount">
+                            <div class="value">${swap.fromAmount} ${swap.from} → ${swap.toAmount} ${swap.to}</div>
+                            <div class="time">Completed</div>
+                        </div>
+                    `;
+                    
+                    recentSwapsList.appendChild(swapItem);
+                });
+            }
+            
+            // Connect wallet
+            function connectWallet() {
+                if (!walletConnected) {
+                    walletConnected = true;
+                    connectWalletBtn.innerHTML = `<i class="fas fa-check"></i><span>Connected</span>`;
+                    connectWalletBtn.style.backgroundColor = 'var(--success-color)';
+                    connectWalletBtn.style.borderColor = 'var(--success-color)';
+                    
+                    // Show confirmation
+                    setTimeout(() => {
+                        alert('Wallet connected successfully!');
+                    }, 300);
+                } else {
+                    // In a real app, this would disconnect the wallet
+                    walletConnected = false;
+                    connectWalletBtn.innerHTML = `<i class="fas fa-wallet"></i><span>Connect Wallet</span>`;
+                    connectWalletBtn.style.backgroundColor = '';
+                    connectWalletBtn.style.borderColor = '';
+                }
+            }
+            
+            // Toggle slippage settings
+            function toggleSlippageSettings() {
+                settingsBtn.classList.toggle('active');
+                slippageSettings.classList.toggle('active');
+            }
+            
+            // Execute swap
+            function executeSwap() {
+                if (!walletConnected) {
+                    alert('Please connect your wallet first');
+                    return;
+                }
+                
+                if (fromAmount <= 0) {
+                    alert('Please enter a valid amount');
+                    return;
+                }
+                
+                const fromTokenData = tokens.find(t => t.symbol === fromToken);
+                if (!fromTokenData || fromAmount > fromTokenData.balance) {
+                    alert('Insufficient balance');
+                    return;
+                }
+                
+                // Show loading state
+                swapButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i><span>Processing...</span>`;
+                swapButton.disabled = true;
+                
+                // Simulate swap processing
+                setTimeout(() => {
+                    // Update balances (in a real app, this would be handled by the blockchain)
+                    fromTokenData.balance -= fromAmount;
+                    const toTokenData = tokens.find(t => t.symbol === toToken);
+                    if (toTokenData) {
+                        toTokenData.balance += toAmount;
+                    }
+                    
+                    // Add to recent swaps
+                    const now = new Date();
+                    const timeAgo = 'Just now';
+                    recentSwaps.unshift({
+                        from: fromToken,
+                        to: toToken,
+                        fromAmount: fromAmount,
+                        toAmount: toAmount.toFixed(2),
+                        time: timeAgo
+                    });
+                    
+                    // Keep only 5 recent swaps
+                    if (recentSwaps.length > 5) {
+                        recentSwaps.pop();
+                    }
+                    
+                    // Reset form
+                    fromAmountInput.value = '';
+                    toAmountInput.value = '';
+                    
+                    // Update UI
+                    updateBalances();
+                    renderRecentSwaps();
+                    
+                    // Show success message
+                    swapButton.innerHTML = `<i class="fas fa-check"></i><span>Swap Successful!</span>`;
+                    swapButton.style.backgroundColor = 'var(--success-color)';
+                    
+                    setTimeout(() => {
+                        swapButton.innerHTML = `<i class="fas fa-exchange-alt"></i><span>Swap Tokens</span>`;
+                        swapButton.style.backgroundColor = '';
+                        swapButton.disabled = false;
+                        calculateSwap();
+                        
+                        // Show success alert
+                        alert(`Successfully swapped ${fromAmount} ${fromToken} for ${toAmount.toFixed(2)} ${toToken}!`);
+                    }, 1500);
+                }, 2000);
+            }
+            
+            // Initialize the app
+            init();
+        });
+    </script>
+</body>
+</html>

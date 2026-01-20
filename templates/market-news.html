@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market News | Financial Insights</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #dbeafe;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #0f172a;
+            --light-gray: #f8fafc;
+            --medium-gray: #e2e8f0;
+            --dark-gray: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --crypto-color: #f59e0b;
+            --forex-color: #3b82f6;
+            --commodity-color: #8b5cf6;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --radius-lg: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #334155;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid var(--medium-gray);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .logo-subtext {
+            font-size: 12px;
+            color: var(--dark-gray);
+            margin-left: 5px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .time-display {
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-size: 14px;
+            background-color: var(--light-gray);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-btn {
+            padding: 8px 16px;
+            background: none;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--radius);
+            font-size: 14px;
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-btn:hover {
+            background-color: var(--light-gray);
+        }
+
+        .header-btn.primary {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .header-btn.primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 25px;
+        }
+
+        /* Page Header */
+        .page-header {
+            grid-column: 1 / -1;
+            margin-bottom: 10px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: var(--dark-gray);
+            font-size: 15px;
+        }
+
+        /* News Categories */
+        .news-categories {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background: var(--light-gray);
+            border: 1px solid var(--medium-gray);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--dark-gray);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+
+        .category-btn:hover {
+            background: white;
+            box-shadow: var(--shadow);
+        }
+
+        .category-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Main News Column */
+        .main-news {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Featured News */
+        .featured-news {
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--medium-gray);
+        }
+
+        .featured-image {
+            height: 300px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .featured-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+        }
+
+        .featured-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .featured-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .featured-excerpt {
+            font-size: 15px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .featured-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--medium-gray);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .news-card.large {
+            grid-column: span 2;
+        }
+
+        .news-image {
+            height: 180px;
+            background: var(--light-gray);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .news-card:hover .news-image img {
+            transform: scale(1.05);
+        }
+
+        .news-tag {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .news-content {
+            padding: 20px;
+        }
+
+        .news-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .news-excerpt {
+            font-size: 14px;
+            color: var(--dark-gray);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+
+        .news-source {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Market Sentiment */
+        .sentiment-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--medium-gray);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sentiment-meter {
+            margin-bottom: 25px;
+        }
+
+        .sentiment-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .sentiment-bar {
+            height: 8px;
+            background: var(--medium-gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .sentiment-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .sentiment-fill.bullish {
+            background-color: var(--success-color);
+            width: 65%;
+        }
+
+        .sentiment-fill.bearish {
+            background-color: var(--error-color);
+            width: 25%;
+        }
+
+        .sentiment-fill.neutral {
+            background-color: var(--warning-color);
+            width: 10%;
+        }
+
+        .sentiment-stats {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        .sentiment-stat {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+
+        /* Trending Topics */
+        .trending-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--medium-gray);
+        }
+
+        .trending-list {
+            list-style: none;
+        }
+
+        .trending-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .trending-item:last-child {
+            border-bottom: none;
+        }
+
+        .trending-rank {
+            width: 30px;
+            height: 30px;
+            background: var(--light-gray);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--dark-gray);
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .trending-rank.top {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .trending-info {
+            flex-grow: 1;
+        }
+
+        .trending-topic {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 3px;
+        }
+
+        .trending-stats {
+            font-size: 12px;
+            color: var(--dark-gray);
+        }
+
+        .trending-change {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .trending-change.up {
+            color: var(--success-color);
+        }
+
+        .trending-change.down {
+            color: var(--error-color);
+        }
+
+        /* Breaking News */
+        .breaking-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--medium-gray);
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-color: #f59e0b;
+        }
+
+        .breaking-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--warning-color);
+        }
+
+        .breaking-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--warning-color);
+        }
+
+        .breaking-content {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--secondary-color);
+        }
+
+        .breaking-time {
+            font-size: 12px;
+            color: var(--dark-gray);
+            margin-top: 10px;
+        }
+
+        /* News Sources */
+        .sources-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--medium-gray);
+        }
+
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .source-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background: var(--light-gray);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .source-item:hover {
+            background: white;
+            box-shadow: var(--shadow);
+        }
+
+        .source-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: white;
+            font-size: 14px;
+        }
+
+        .source-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        /* Live News Ticker */
+        .news-ticker {
+            grid-column: 1 / -1;
+            background: var(--secondary-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: var(--radius);
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .ticker-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .ticker-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .ticker-container {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            white-space: nowrap;
+            padding-right: 40px;
+            animation: ticker 30s linear infinite;
+        }
+
+        .ticker-news {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ticker-tag {
+            background: var(--primary-color);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .ticker-text {
+            font-size: 14px;
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Footer */
+        .footer {
+            grid-column: 1 / -1;
+            background: white;
+            border-top: 1px solid var(--medium-gray);
+            padding: 30px 20px;
+            margin-top: 40px;
+            border-radius: var(--radius-lg);
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-text {
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Modal for full article */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--dark-gray);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--light-gray);
+        }
+
+        .modal-content {
+            padding: 25px;
+            max-height: calc(90vh - 120px);
+            overflow-y: auto;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            background: var(--light-gray);
+            border-radius: var(--radius);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            line-height: 1.7;
+        }
+
+        .modal-body p {
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .header-container {
+                flex-direction: column;
+                height: auto;
+                padding: 15px 0;
+                gap: 15px;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .news-card.large {
+                grid-column: span 1;
+            }
+            
+            .sources-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .page-title h1 {
+                font-size: 28px;
+            }
+            
+            .featured-image {
+                height: 250px;
+            }
+            
+            .featured-title {
+                font-size: 20px;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .featured-image {
+                height: 200px;
+            }
+            
+            .featured-overlay {
+                padding: 20px;
+            }
+            
+            .featured-title {
+                font-size: 18px;
+            }
+            
+            .sources-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-categories {
+                padding-bottom: 5px;
+            }
+            
+            .category-btn {
+                padding: 8px 15px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">N</div>
+                <div>
+                    <div class="logo-text">Market News<span class="logo-subtext">Live Updates</span></div>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <div class="time-display" id="currentTime">Loading...</div>
+                
+                <div class="header-buttons">
+                    <button class="header-btn" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Refresh</span>
+                    </button>
+                    <button class="header-btn primary" id="alertsBtn">
+                        <i class="fas fa-bell"></i>
+                        <span>News Alerts</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-title">
+                <h1>Financial Market News</h1>
+                <p>Latest updates, analysis, and insights from global markets</p>
+            </div>
+        </div>
+
+        <!-- News Categories -->
+        <div class="news-categories">
+            <button class="category-btn active" data-category="all">All News</button>
+            <button class="category-btn" data-category="stocks">Stocks</button>
+            <button class="category-btn" data-category="crypto">Cryptocurrency</button>
+            <button class="category-btn" data-category="forex">Forex</button>
+            <button class="category-btn" data-category="commodities">Commodities</button>
+            <button class="category-btn" data-category="economy">Economy</button>
+            <button class="category-btn" data-category="tech">Technology</button>
+            <button class="category-btn" data-category="earnings">Earnings</button>
+            <button class="category-btn" data-category="ipo">IPO</button>
+            <button class="category-btn" data-category="analysis">Market Analysis</button>
+        </div>
+
+        <!-- Main News Column -->
+        <div class="main-news">
+            <!-- Featured News -->
+            <div class="featured-news">
+                <div class="featured-image">
+                    <div class="featured-overlay">
+                        <div class="featured-tag">BREAKING</div>
+                        <h2 class="featured-title">Federal Reserve Signals Rate Pause After Latest Inflation Data</h2>
+                        <p class="featured-excerpt">The Federal Reserve indicates it may hold interest rates steady at the December meeting amid signs of easing inflation, sparking market rally.</p>
+                        <div class="featured-meta">
+                            <span><i class="far fa-clock"></i> 45 minutes ago</span>
+                            <span><i class="far fa-newspaper"></i> Financial Times</span>
+                            <span><i class="fas fa-chart-line"></i> Market Impact: High</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News Grid -->
+            <div class="news-grid">
+                <!-- News Card 1 -->
+                <div class="news-card">
+                    <div class="news-image" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                        <div class="news-tag">STOCKS</div>
+                    </div>
+                    <div class="news-content">
+                        <h3 class="news-title">Tech Stocks Rally on Strong Q3 Earnings Reports</h3>
+                        <p class="news-excerpt">Major technology companies report better-than-expected earnings, driving NASDAQ to 2-week high as AI investments pay off.</p>
+                        <div class="news-meta">
+                            <span class="news-source">Bloomberg</span>
+                            <span>30 min ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News Card 2 -->
+                <div class="news-card">
+                    <div class="news-image" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        <div class="news-tag">CRYPTO</div>
+                    </div>
+                    <div class="news-content">
+                        <h3 class="news-title">Bitcoin Surges Past $45,000 Amid Institutional Adoption</h3>
+                        <p class="news-excerpt">Bitcoin reaches new yearly high as major financial institutions announce cryptocurrency investment products and custody services.</p>
+                        <div class="news-meta">
+                            <span class="news-source">CoinDesk</span>
+                            <span>1 hour ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News Card 3 -->
+                <div class="news-card large">
+                    <div class="news-image" style="background: linear-gradient(135deg, #10b981, #047857);">
+                        <div class="news-tag">ECONOMY</div>
+                    </div>
+                    <div class="news-content">
+                        <h3 class="news-title">US Job Growth Exceeds Expectations, Unemployment Drops to 3.7%</h3>
+                        <p class="news-excerpt">November jobs report shows stronger than expected hiring, suggesting resilience in the labor market despite economic uncertainty.</p>
+                        <div class="news-meta">
+                            <span class="news-source">Reuters</span>
+                            <span>2 hours ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News Card 4 -->
+                <div class="news-card">
+                    <div class="news-image" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                        <div class="news-tag">COMMODITIES</div>
+                    </div>
+                    <div class="news-content">
+                        <h3 class="news-title">Gold Prices Hit Record High Amid Economic Uncertainty</h3>
+                        <p class="news-excerpt">Gold surpasses $2,100 per ounce as investors seek safe-haven assets amid geopolitical tensions and currency volatility.</p>
+                        <div class="news-meta">
+                            <span class="news-source">CNBC</span>
+                            <span>3 hours ago</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- News Card 5 -->
+                <div class="news-card">
+                    <div class="news-image" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                        <div class="news-tag">FOREX</div>
+                    </div>
+                    <div class="news-content">
+                        <h3 class="news-title">Dollar Weakens Against Major Currencies After Fed Comments</h3>
+                        <p class="news-excerpt">The US dollar index falls as Federal Reserve officials suggest rate hikes may be nearing an end, boosting other currencies.</p>
+                        <div class="news-meta">
+                            <span class="news-source">FXStreet</span>
+                            <span>4 hours ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Market Sentiment -->
+            <div class="sentiment-card">
+                <div class="card-title">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Market Sentiment</span>
+                </div>
+                <div class="sentiment-meter">
+                    <div class="sentiment-label">
+                        <span>Bullish</span>
+                        <span>65%</span>
+                    </div>
+                    <div class="sentiment-bar">
+                        <div class="sentiment-fill bullish"></div>
+                    </div>
+                    
+                    <div class="sentiment-label">
+                        <span>Bearish</span>
+                        <span>25%</span>
+                    </div>
+                    <div class="sentiment-bar">
+                        <div class="sentiment-fill bearish"></div>
+                    </div>
+                    
+                    <div class="sentiment-label">
+                        <span>Neutral</span>
+                        <span>10%</span>
+                    </div>
+                    <div class="sentiment-bar">
+                        <div class="sentiment-fill neutral"></div>
+                    </div>
+                </div>
+                <div class="sentiment-stats">
+                    <div class="sentiment-stat">
+                        <div class="stat-value">2,450</div>
+                        <div class="stat-label">Positive News</div>
+                    </div>
+                    <div class="sentiment-stat">
+                        <div class="stat-value">850</div>
+                        <div class="stat-label">Negative News</div>
+                    </div>
+                    <div class="sentiment-stat">
+                        <div class="stat-value">380</div>
+                        <div class="stat-label">Neutral News</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trending Topics -->
+            <div class="trending-card">
+                <div class="card-title">
+                    <i class="fas fa-fire"></i>
+                    <span>Trending Topics</span>
+                </div>
+                <ul class="trending-list">
+                    <li class="trending-item">
+                        <div class="trending-rank top">1</div>
+                        <div class="trending-info">
+                            <div class="trending-topic">Federal Reserve Policy</div>
+                            <div class="trending-stats">1,245 articles</div>
+                        </div>
+                        <div class="trending-change up">+42%</div>
+                    </li>
+                    <li class="trending-item">
+                        <div class="trending-rank">2</div>
+                        <div class="trending-info">
+                            <div class="trending-topic">AI Investment Boom</div>
+                            <div class="trending-stats">987 articles</div>
+                        </div>
+                        <div class="trending-change up">+38%</div>
+                    </li>
+                    <li class="trending-item">
+                        <div class="trending-rank">3</div>
+                        <div class="trending-info">
+                            <div class="trending-topic">Bitcoin ETF Approval</div>
+                            <div class="trending-stats">856 articles</div>
+                        </div>
+                        <div class="trending-change up">+65%</div>
+                    </li>
+                    <li class="trending-item">
+                        <div class="trending-rank">4</div>
+                        <div class="trending-info">
+                            <div class="trending-topic">Energy Sector Rally</div>
+                            <div class="trending-stats">723 articles</div>
+                        </div>
+                        <div class="trending-change up">+22%</div>
+                    </li>
+                    <li class="trending-item">
+                        <div class="trending-rank">5</div>
+                        <div class="trending-info">
+                            <div class="trending-topic">China Economic Data</div>
+                            <div class="trending-stats">654 articles</div>
+                        </div>
+                        <div class="trending-change down">-15%</div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Breaking News -->
+            <div class="breaking-card">
+                <div class="breaking-header">
+                    <i class="fas fa-bolt"></i>
+                    <div class="breaking-title">Breaking News</div>
+                </div>
+                <div class="breaking-content">
+                    Major oil producers agree to extend production cuts through Q1 2024, sending crude prices higher in pre-market trading.
+                </div>
+                <div class="breaking-time">Updated 15 minutes ago</div>
+            </div>
+
+            <!-- News Sources -->
+            <div class="sources-card">
+                <div class="card-title">
+                    <i class="fas fa-newspaper"></i>
+                    <span>News Sources</span>
+                </div>
+                <div class="sources-grid">
+                    <div class="source-item" data-source="bloomberg">
+                        <div class="source-icon" style="background-color: #000000;">B</div>
+                        <div class="source-name">Bloomberg</div>
+                    </div>
+                    <div class="source-item" data-source="reuters">
+                        <div class="source-icon" style="background-color: #ff6b35;">R</div>
+                        <div class="source-name">Reuters</div>
+                    </div>
+                    <div class="source-item" data-source="ft">
+                        <div class="source-icon" style="background-color: #fff1e5; color: #000;">FT</div>
+                        <div class="source-name">Financial Times</div>
+                    </div>
+                    <div class="source-item" data-source="wsj">
+                        <div class="source-icon" style="background-color: #0074de;">WSJ</div>
+                        <div class="source-name">Wall Street Journal</div>
+                    </div>
+                    <div class="source-item" data-source="cnbc">
+                        <div class="source-icon" style="background-color: #000000;">C</div>
+                        <div class="source-name">CNBC</div>
+                    </div>
+                    <div class="source-item" data-source="yahoo">
+                        <div class="source-icon" style="background-color: #6001d2; color: white;">Y!</div>
+                        <div class="source-name">Yahoo Finance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live News Ticker -->
+        <div class="news-ticker">
+            <div class="ticker-header">
+                <i class="fas fa-broadcast-tower"></i>
+                <div class="ticker-title">Live Market Updates</div>
+            </div>
+            <div class="ticker-container">
+                <div class="ticker-item" id="tickerContent">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-text">
+                    © 2023 Market News Dashboard. All news data is aggregated from multiple sources.
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                    <a href="#" class="footer-link">Contact</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Article Modal -->
+    <div class="modal-overlay" id="articleModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Article Title</div>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <div class="modal-image" id="modalImage"></div>
+                <div class="modal-body" id="modalBody">
+                    <!-- Article content will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const currentTime = document.getElementById('currentTime');
+            const refreshBtn = document.getElementById('refreshBtn');
+            const alertsBtn = document.getElementById('alertsBtn');
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const articleModal = document.getElementById('articleModal');
+            const closeModal = document.getElementById('closeModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalImage = document.getElementById('modalImage');
+            const modalBody = document.getElementById('modalBody');
+            const tickerContent = document.getElementById('tickerContent');
+            const sourceItems = document.querySelectorAll('.source-item');
+            const newsCards = document.querySelectorAll('.news-card');
+            const featuredNews = document.querySelector('.featured-news');
+            
+            // News data
+            const newsData = [
+                {
+                    id: 1,
+                    title: "Tech Stocks Rally on Strong Q3 Earnings Reports",
+                    excerpt: "Major technology companies report better-than-expected earnings, driving NASDAQ to 2-week high as AI investments pay off.",
+                    category: "stocks",
+                    source: "Bloomberg",
+                    time: "30 min ago",
+                    color: "#3b82f6",
+                    impact: "High",
+                    fullContent: "<p>Technology stocks surged on Thursday after several major companies reported stronger-than-expected quarterly earnings, with the NASDAQ Composite Index climbing 2.3% to reach its highest level in two weeks.</p><p>The rally was led by semiconductor companies, which posted impressive results driven by demand for artificial intelligence chips. Nvidia reported revenue that beat estimates by 15%, while Advanced Micro Devices also exceeded expectations.</p><p>\"The AI investment cycle is showing clear results in earnings,\" said market analyst Sarah Johnson. \"Companies that have invested in AI infrastructure are seeing significant returns, and this is likely to continue into 2024.\"</p><p>The positive earnings reports helped offset concerns about higher interest rates and economic uncertainty. Analysts now expect tech sector earnings to grow by 12% in the fourth quarter, up from previous estimates of 8%.</p>"
+                },
+                {
+                    id: 2,
+                    title: "Bitcoin Surges Past $45,000 Amid Institutional Adoption",
+                    excerpt: "Bitcoin reaches new yearly high as major financial institutions announce cryptocurrency investment products and custody services.",
+                    category: "crypto",
+                    source: "CoinDesk",
+                    time: "1 hour ago",
+                    color: "#f59e0b",
+                    impact: "High",
+                    fullContent: "<p>Bitcoin broke through the $45,000 barrier on Thursday, reaching its highest level since April 2022, as institutional adoption of cryptocurrency accelerates.</p><p>The rally came after several major financial institutions announced new cryptocurrency products and services. BlackRock filed for a spot Bitcoin ETF, while Fidelity expanded its cryptocurrency custody services to include additional digital assets.</p><p>\"Institutional interest in Bitcoin has reached a tipping point,\" said crypto analyst Michael Chen. \"We're seeing traditional financial institutions not just exploring crypto, but launching actual products for their clients.\"</p><p>Bitcoin has now gained over 160% year-to-date, significantly outperforming traditional asset classes. The cryptocurrency's market capitalization has surpassed $880 billion, approaching the $1 trillion mark it last reached in late 2021.</p>"
+                },
+                {
+                    id: 3,
+                    title: "US Job Growth Exceeds Expectations, Unemployment Drops to 3.7%",
+                    excerpt: "November jobs report shows stronger than expected hiring, suggesting resilience in the labor market despite economic uncertainty.",
+                    category: "economy",
+                    source: "Reuters",
+                    time: "2 hours ago",
+                    color: "#10b981",
+                    impact: "Medium",
+                    fullContent: "<p>The U.S. economy added 199,000 jobs in November, exceeding economist expectations of 180,000, while the unemployment rate fell to 3.7% from 3.9% the previous month.</p><p>The stronger-than-expected jobs report suggests resilience in the labor market despite concerns about economic slowing. Healthcare led job gains with 77,000 new positions, followed by government with 49,000 and manufacturing with 28,000.</p><p>\"The labor market continues to show surprising strength,\" said economist David Wilson. \"This gives the Federal Reserve more room to maintain higher interest rates to combat inflation, but also reduces immediate recession risks.\"</p><p>Average hourly earnings rose 0.4% for the month and 4.0% year-over-year, matching expectations. The labor force participation rate remained steady at 62.8%.</p>"
+                },
+                {
+                    id: 4,
+                    title: "Gold Prices Hit Record High Amid Economic Uncertainty",
+                    excerpt: "Gold surpasses $2,100 per ounce as investors seek safe-haven assets amid geopolitical tensions and currency volatility.",
+                    category: "commodities",
+                    source: "CNBC",
+                    time: "3 hours ago",
+                    color: "#8b5cf6",
+                    impact: "Medium",
+                    fullContent: "<p>Gold prices reached a record high on Thursday, breaking through the $2,100 per ounce barrier for the first time as investors seek safe-haven assets amid economic uncertainty.</p><p>The precious metal has gained 13% this year, outperforming most major asset classes. The rally has been driven by geopolitical tensions, concerns about economic growth, and volatility in currency markets.</p><p>\"Gold is benefiting from a perfect storm of factors,\" said commodities analyst Lisa Wang. \"We have geopolitical risk, concerns about the banking sector, and investors looking for protection against potential currency debasement.\"</p><p>Central bank buying has also supported gold prices, with global central banks adding a record 800 tons to their reserves in the first three quarters of 2023. Analysts expect continued strong demand from both institutional and retail investors.</p>"
+                },
+                {
+                    id: 5,
+                    title: "Dollar Weakens Against Major Currencies After Fed Comments",
+                    excerpt: "The US dollar index falls as Federal Reserve officials suggest rate hikes may be nearing an end, boosting other currencies.",
+                    category: "forex",
+                    source: "FXStreet",
+                    time: "4 hours ago",
+                    color: "#ef4444",
+                    impact: "Medium",
+                    fullContent: "<p>The U.S. dollar weakened against major currencies on Thursday after Federal Reserve officials suggested that interest rate hikes may be nearing an end, with the dollar index falling 0.8% to a three-month low.</p><p>The euro gained 0.9% against the dollar to reach $1.0950, while the British pound rose 0.7% to $1.2650. The Japanese yen also strengthened, with the dollar falling to 146.50 yen from 147.80.</p><p>\"The market is interpreting recent Fed comments as dovish,\" said currency strategist Robert Kim. \"If the Fed is indeed done with rate hikes, that removes a major support for the dollar and could lead to further weakness.\"</p><p>Analysts note that currency markets are now focusing on when the Fed might begin cutting rates, with futures markets pricing in a potential rate cut as early as March 2024. This expectation is putting additional pressure on the dollar.</p>"
+                }
+            ];
+            
+            // Ticker data
+            const tickerData = [
+                { tag: "STOCKS", text: "NASDAQ up 2.3%, S&P 500 gains 1.5% in morning trading" },
+                { tag: "FOREX", text: "EUR/USD breaks 1.0950 resistance level, highest since August" },
+                { tag: "CRYPTO", text: "Ethereum gains 5% following Bitcoin's rally to $45,000" },
+                { tag: "ECONOMY", text: "U.S. weekly jobless claims fall to 220,000, below expectations" },
+                { tag: "COMMODITIES", text: "Oil prices rise 2% after OPEC+ extends production cuts" },
+                { tag: "TECH", text: "Apple shares hit all-time high ahead of product launch event" },
+                { tag: "IPO", text: "Instacart shares surge 12% on strong earnings debut" }
+            ];
+            
+            // Initialize
+            function init() {
+                updateTime();
+                setupEventListeners();
+                renderTicker();
+                simulateLiveUpdates();
+            }
+            
+            // Update current time
+            function updateTime() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true 
+                });
+                const dateString = now.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                
+                currentTime.textContent = `${dateString} | ${timeString}`;
+            }
+            
+            // Setup event listeners
+            function setupEventListeners() {
+                // Update time every second
+                setInterval(updateTime, 1000);
+                
+                // Refresh button
+                refreshBtn.addEventListener('click', function() {
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Refreshing...</span>';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-sync-alt"></i><span>Refresh</span>';
+                        alert('News feed refreshed with latest updates!');
+                        simulateLiveUpdates();
+                    }, 1500);
+                });
+                
+                // Alerts button
+                alertsBtn.addEventListener('click', function() {
+                    alert('You will now receive breaking news alerts. Customize your alerts in settings.');
+                });
+                
+                // Category buttons
+                categoryButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        categoryButtons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        const category = this.getAttribute('data-category');
+                        filterNewsByCategory(category);
+                    });
+                });
+                
+                // News cards click
+                newsCards.forEach(card => {
+                    card.addEventListener('click', function() {
+                        // Find which news item was clicked
+                        const title = this.querySelector('.news-title').textContent;
+                        const newsItem = newsData.find(item => item.title === title);
+                        
+                        if (newsItem) {
+                            openArticleModal(newsItem);
+                        }
+                    });
+                });
+                
+                // Featured news click
+                featuredNews.addEventListener('click', function() {
+                    const newsItem = {
+                        title: "Federal Reserve Signals Rate Pause After Latest Inflation Data",
+                        excerpt: "The Federal Reserve indicates it may hold interest rates steady at the December meeting amid signs of easing inflation, sparking market rally.",
+                        category: "economy",
+                        source: "Financial Times",
+                        time: "45 minutes ago",
+                        color: "#2563eb",
+                        impact: "High",
+                        fullContent: "<p>The Federal Reserve signaled on Wednesday that it may hold interest rates steady at its December meeting, with several officials pointing to encouraging signs that inflation is easing.</p><p>In speeches and interviews, multiple Fed policymakers suggested that the central bank's aggressive rate-hiking campaign may have run its course, at least for now. This sparked a rally in stocks and bonds, with the S&P 500 gaining 1.8% and Treasury yields falling.</p><p>\"We're seeing clear progress on inflation,\" said Federal Reserve Governor Christopher Waller. \"The data we've received recently gives us room to proceed carefully and assess the full effects of our previous rate hikes.\"</p><p>The Fed's preferred inflation gauge, the Personal Consumption Expenditures price index, rose just 0.2% in October and was up 3.5% from a year earlier, down from a peak of 7% in June 2022. Core PCE, which excludes food and energy, rose 3.5% year-over-year, the smallest increase since April 2021.</p><p>Markets are now pricing in a 95% probability that the Fed will keep rates unchanged at its December 12-13 meeting, according to CME Group's FedWatch tool. Investors are also betting that the central bank could begin cutting rates as soon as March 2024.</p>"
+                    };
+                    
+                    openArticleModal(newsItem);
+                });
+                
+                // Source items click
+                sourceItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const source = this.getAttribute('data-source');
+                        alert(`Filtering news from ${this.querySelector('.source-name').textContent}`);
+                        
+                        // In a real app, this would filter news by source
+                        sourceItems.forEach(src => src.style.opacity = '1');
+                        this.style.opacity = '0.7';
+                    });
+                });
+                
+                // Modal close
+                closeModal.addEventListener('click', () => {
+                    articleModal.classList.remove('active');
+                });
+                
+                articleModal.addEventListener('click', (e) => {
+                    if (e.target === articleModal) {
+                        articleModal.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Filter news by category
+            function filterNewsByCategory(category) {
+                if (category === 'all') {
+                    newsCards.forEach(card => card.style.display = 'block');
+                } else {
+                    newsCards.forEach(card => {
+                        const cardCategory = card.querySelector('.news-tag').textContent.toLowerCase();
+                        if (cardCategory === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+            }
+            
+            // Render ticker
+            function renderTicker() {
+                tickerContent.innerHTML = '';
+                
+                // Create multiple copies for seamless scrolling
+                for (let i = 0; i < 3; i++) {
+                    tickerData.forEach(item => {
+                        const tickerNews = document.createElement('div');
+                        tickerNews.className = 'ticker-news';
+                        
+                        tickerNews.innerHTML = `
+                            <div class="ticker-tag">${item.tag}</div>
+                            <div class="ticker-text">${item.text}</div>
+                            <i class="fas fa-circle" style="font-size: 4px; color: var(--medium-gray);"></i>
+                        `;
+                        
+                        tickerContent.appendChild(tickerNews);
+                    });
+                }
+            }
+            
+            // Open article modal
+            function openArticleModal(newsItem) {
+                modalTitle.textContent = newsItem.title;
+                modalImage.innerHTML = `<div style="width:100%;height:100%;background:linear-gradient(135deg, ${newsItem.color}, ${darkenColor(newsItem.color, 20)});"></div>`;
+                
+                modalBody.innerHTML = `
+                    <div style="display: flex; gap: 20px; margin-bottom: 20px; font-size: 14px; color: var(--dark-gray);">
+                        <div><i class="far fa-clock"></i> ${newsItem.time}</div>
+                        <div><i class="far fa-newspaper"></i> ${newsItem.source}</div>
+                        <div><i class="fas fa-chart-line"></i> Market Impact: ${newsItem.impact}</div>
+                    </div>
+                    ${newsItem.fullContent}
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--medium-gray);">
+                        <button id="shareArticle" style="padding: 10px 20px; background: var(--primary-color); color: white; border: none; border-radius: var(--radius); cursor: pointer; font-size: 14px;">
+                            <i class="fas fa-share"></i> Share Article
+                        </button>
+                    </div>
+                `;
+                
+                articleModal.classList.add('active');
+                
+                // Add event listener to share button
+                setTimeout(() => {
+                    document.getElementById('shareArticle').addEventListener('click', () => {
+                        alert(`Sharing: "${newsItem.title}"`);
+                    });
+                }, 100);
+            }
+            
+            // Helper function to darken color
+            function darkenColor(color, percent) {
+                const num = parseInt(color.replace("#", ""), 16);
+                const amt = Math.round(2.55 * percent);
+                const R = (num >> 16) - amt;
+                const G = (num >> 8 & 0x00FF) - amt;
+                const B = (num & 0x0000FF) - amt;
+                
+                return "#" + (
+                    0x1000000 +
+                    (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+                    (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
+                    (B < 255 ? (B < 1 ? 0 : B) : 255)
+                ).toString(16).slice(1);
+            }
+            
+            // Simulate live updates
+            function simulateLiveUpdates() {
+                // Randomly update trending topics
+                setInterval(() => {
+                    const trendingChanges = document.querySelectorAll('.trending-change');
+                    trendingChanges.forEach(change => {
+                        const isUp = Math.random() > 0.3;
+                        const percent = (Math.random() * 30 + 5).toFixed(0);
+                        
+                        change.textContent = `${isUp ? '+' : '-'}${percent}%`;
+                        change.className = `trending-change ${isUp ? 'up' : 'down'}`;
+                    });
+                    
+                    // Randomly update sentiment
+                    const bullishFill = document.querySelector('.sentiment-fill.bullish');
+                    const bearishFill = document.querySelector('.sentiment-fill.bearish');
+                    const neutralFill = document.querySelector('.sentiment-fill.neutral');
+                    
+                    const bullishPercent = 60 + Math.random() * 10;
+                    const bearishPercent = 20 + Math.random() * 10;
+                    const neutralPercent = 100 - bullishPercent - bearishPercent;
+                    
+                    bullishFill.style.width = `${bullishPercent}%`;
+                    bearishFill.style.width = `${bearishPercent}%`;
+                    neutralFill.style.width = `${neutralPercent}%`;
+                    
+                    document.querySelector('.sentiment-label:nth-child(1) span:last-child').textContent = `${Math.round(bullishPercent)}%`;
+                    document.querySelector('.sentiment-label:nth-child(2) span:last-child').textContent = `${Math.round(bearishPercent)}%`;
+                    document.querySelector('.sentiment-label:nth-child(3) span:last-child').textContent = `${Math.round(neutralPercent)}%`;
+                    
+                }, 10000); // Update every 10 seconds
+                
+                // Simulate new breaking news
+                setTimeout(() => {
+                    const breakingContent = document.querySelector('.breaking-content');
+                    const breakingTime = document.querySelector('.breaking-time');
+                    
+                    const breakingNews = [
+                        "ECB announces new bond-buying program to stabilize European markets",
+                        "Tesla shares jump 8% after announcing new factory in Mexico",
+                        "U.S. and China reach agreement on trade tariffs, boosting market sentiment",
+                        "Major bank merger announced: JPMorgan to acquire regional bank for $5B"
+                    ];
+                    
+                    const randomNews = breakingNews[Math.floor(Math.random() * breakingNews.length)];
+                    
+                    breakingContent.textContent = randomNews;
+                    breakingTime.textContent = "Updated just now";
+                    
+                    // Flash animation
+                    breakingCard = document.querySelector('.breaking-card');
+                    breakingCard.style.animation = 'none';
+                    setTimeout(() => {
+                        breakingCard.style.animation = 'pulse 2s';
+                    }, 10);
+                    
+                }, 15000); // New breaking news after 15 seconds
+            }
+            
+            // Initialize the app
+            init();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications | Alert Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #06b6d4;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 25px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo-text p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        
+        .notification-badge {
+            position: relative;
+        }
+        
+        .notification-icon {
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+        }
+        
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: #f8fafc;
+            border: none;
+            border-radius: 10px;
+            color: #64748b;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+        }
+        
+        .filter-btn:hover:not(.active) {
+            background: #e2e8f0;
+            color: #334155;
+        }
+        
+        .settings-group {
+            border-top: 1px solid #f1f5f9;
+            padding-top: 25px;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        
+        /* Notifications List */
+        .notifications-container {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .notifications-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .notifications-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        
+        .notifications-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-btn {
+            padding: 10px 20px;
+            background: #f1f5f9;
+            border: none;
+            border-radius: 8px;
+            color: #64748b;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+        
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .notification-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .notification-item.unread {
+            background: #f0f7ff;
+            border-left-color: #2563eb;
+        }
+        
+        .notification-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .notification-icon-container {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .notification-icon-container.info {
+            background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+        }
+        
+        .notification-icon-container.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .notification-icon-container.warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .notification-icon-container.danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #0f172a;
+        }
+        
+        .notification-message {
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+        
+        .notification-time {
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+        
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .notification-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            color: #64748b;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .notification-btn:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+        
+        .notification-mark {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 10px;
+            height: 10px;
+            background: #3b82f6;
+            border-radius: 50%;
+        }
+        
+        .empty-notifications {
+            text-align: center;
+            padding: 60px 20px;
+            color: #94a3b8;
+        }
+        
+        .empty-notifications i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #cbd5e1;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            padding: 25px;
+            background: #0f172a;
+            border-radius: 16px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #3b82f6;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .notifications-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .notifications-actions {
+                width: 100%;
+            }
+            
+            .action-btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Notification Center</h1>
+                        <p>Stay updated with all your alerts</p>
+                    </div>
+                </div>
+                
+                <div class="notification-badge">
+                    <div class="notification-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="badge" id="notification-count">12</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <h2 class="sidebar-title">
+                    <i class="fas fa-filter"></i> Filters
+                </h2>
+                
+                <div class="filter-options">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-inbox"></i> All Notifications
+                        <span style="margin-left: auto; font-size: 0.9rem;">12</span>
+                    </button>
+                    <button class="filter-btn" data-filter="unread">
+                        <i class="fas fa-envelope"></i> Unread
+                        <span style="margin-left: auto; font-size: 0.9rem;">5</span>
+                    </button>
+                    <button class="filter-btn" data-filter="system">
+                        <i class="fas fa-cog"></i> System
+                        <span style="margin-left: auto; font-size: 0.9rem;">3</span>
+                    </button>
+                    <button class="filter-btn" data-filter="security">
+                        <i class="fas fa-shield-alt"></i> Security
+                        <span style="margin-left: auto; font-size: 0.9rem;">2</span>
+                    </button>
+                    <button class="filter-btn" data-filter="updates">
+                        <i class="fas fa-sync-alt"></i> Updates
+                        <span style="margin-left: auto; font-size: 0.9rem;">4</span>
+                    </button>
+                </div>
+                
+                <div class="settings-group">
+                    <h2 class="sidebar-title">
+                        <i class="fas fa-cog"></i> Settings
+                    </h2>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 5px;">Push Notifications</div>
+                            <div style="font-size: 0.9rem; color: #64748b;">Receive notifications in real-time</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 5px;">Email Notifications</div>
+                            <div style="font-size: 0.9rem; color: #64748b;">Get notifications via email</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 5px;">Sound Alerts</div>
+                            <div style="font-size: 0.9rem; color: #64748b;">Play sound for new notifications</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button class="action-btn" style="width: 100%; margin-top: 20px;" id="mark-all-read">
+                    <i class="fas fa-check-double"></i> Mark All as Read
+                </button>
+            </aside>
+            
+            <!-- Notifications List -->
+            <main class="notifications-container">
+                <div class="notifications-header">
+                    <h2 class="notifications-title">Recent Notifications</h2>
+                    <div class="notifications-actions">
+                        <button class="action-btn" id="clear-all">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                        <button class="action-btn" id="refresh">
+                            <i class="fas fa-redo"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="notification-list" id="notification-list">
+                    <!-- Notifications will be populated by JavaScript -->
+                </div>
+                
+                <div class="empty-notifications" id="empty-notifications" style="display: none;">
+                    <i class="far fa-bell"></i>
+                    <h3>No Notifications</h3>
+                    <p>You're all caught up! No new notifications at the moment.</p>
+                </div>
+            </main>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="support.html"><i class="fas fa-question-circle"></i> Support</a>
+                <a href="terms.html"><i class="fas fa-file-alt"></i> Terms</a>
+                <a href="privacy.html"><i class="fas fa-shield-alt"></i> Privacy</a>
+            </div>
+            <p style="margin-top: 20px;">&copy; 2023 Notification Center. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample notifications data
+            const notificationsData = [
+                {
+                    id: 1,
+                    title: "System Update Available",
+                    message: "A new system update is ready to install. It includes security patches and performance improvements.",
+                    type: "system",
+                    icon: "fas fa-sync-alt",
+                    time: "10 minutes ago",
+                    read: false,
+                    actions: ["Install Now", "Remind Later"]
+                },
+                {
+                    id: 2,
+                    title: "Security Alert",
+                    message: "New login detected from an unrecognized device. Please verify if this was you.",
+                    type: "security",
+                    icon: "fas fa-shield-alt",
+                    time: "1 hour ago",
+                    read: false,
+                    actions: ["Review Activity", "Secure Account"]
+                },
+                {
+                    id: 3,
+                    title: "Payment Successful",
+                    message: "Your payment of $49.99 has been processed successfully. Transaction ID: TXN-7854",
+                    type: "success",
+                    icon: "fas fa-check-circle",
+                    time: "2 hours ago",
+                    read: true,
+                    actions: ["View Receipt", "Download Invoice"]
+                },
+                {
+                    id: 4,
+                    title: "New Message Received",
+                    message: "You have a new message from Alex Johnson: 'Let's schedule a meeting for next week.'",
+                    type: "info",
+                    icon: "fas fa-envelope",
+                    time: "5 hours ago",
+                    read: true,
+                    actions: ["Reply", "Mark as Unread"]
+                },
+                {
+                    id: 5,
+                    title: "Storage Almost Full",
+                    message: "Your cloud storage is 90% full. Consider upgrading your plan or clearing unused files.",
+                    type: "warning",
+                    icon: "fas fa-exclamation-triangle",
+                    time: "1 day ago",
+                    read: false,
+                    actions: ["Upgrade Plan", "Manage Storage"]
+                },
+                {
+                    id: 6,
+                    title: "New Feature Released",
+                    message: "Dark mode is now available! Customize your interface in the settings menu.",
+                    type: "info",
+                    icon: "fas fa-bolt",
+                    time: "2 days ago",
+                    read: true,
+                    actions: ["Try It", "Learn More"]
+                },
+                {
+                    id: 7,
+                    title: "Scheduled Maintenance",
+                    message: "System maintenance scheduled for Sunday, 2:00 AM - 4:00 AM. Service may be temporarily unavailable.",
+                    type: "warning",
+                    icon: "fas fa-tools",
+                    time: "3 days ago",
+                    read: true,
+                    actions: ["View Details", "Set Reminder"]
+                },
+                {
+                    id: 8,
+                    title: "Account Verified",
+                    message: "Your account verification is complete. Thank you for securing your account.",
+                    type: "success",
+                    icon: "fas fa-user-check",
+                    time: "1 week ago",
+                    read: true,
+                    actions: ["View Profile"]
+                }
+            ];
+            
+            // DOM Elements
+            const notificationList = document.getElementById('notification-list');
+            const emptyNotifications = document.getElementById('empty-notifications');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const markAllReadBtn = document.getElementById('mark-all-read');
+            const clearAllBtn = document.getElementById('clear-all');
+            const refreshBtn = document.getElementById('refresh');
+            const notificationCount = document.getElementById('notification-count');
+            
+            let currentFilter = 'all';
+            let notifications = [...notificationsData];
+            
+            // Initialize
+            renderNotifications(notifications);
+            updateNotificationCount();
+            
+            // Filter buttons
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update current filter
+                    currentFilter = this.getAttribute('data-filter');
+                    
+                    // Filter notifications
+                    let filteredNotifications;
+                    if (currentFilter === 'all') {
+                        filteredNotifications = [...notificationsData];
+                    } else if (currentFilter === 'unread') {
+                        filteredNotifications = notificationsData.filter(n => !n.read);
+                    } else {
+                        filteredNotifications = notificationsData.filter(n => n.type === currentFilter);
+                    }
+                    
+                    notifications = filteredNotifications;
+                    renderNotifications(notifications);
+                });
+            });
+            
+            // Mark all as read
+            markAllReadBtn.addEventListener('click', function() {
+                notifications.forEach(notification => {
+                    notification.read = true;
+                });
+                
+                notificationsData.forEach(notification => {
+                    notification.read = true;
+                });
+                
+                renderNotifications(notifications);
+                updateNotificationCount();
+                
+                showNotification('All notifications marked as read', 'success');
+            });
+            
+            // Clear all notifications
+            clearAllBtn.addEventListener('click', function() {
+                if (notifications.length === 0) return;
+                
+                if (confirm('Are you sure you want to clear all notifications?')) {
+                    notifications = [];
+                    renderNotifications(notifications);
+                    updateNotificationCount();
+                    
+                    showNotification('All notifications cleared', 'success');
+                }
+            });
+            
+            // Refresh notifications
+            refreshBtn.addEventListener('click', function() {
+                // Reset to all notifications
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                filterButtons[0].classList.add('active');
+                
+                currentFilter = 'all';
+                notifications = [...notificationsData];
+                renderNotifications(notifications);
+                updateNotificationCount();
+                
+                // Add loading animation
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-redo"></i> Refresh';
+                }, 1000);
+                
+                showNotification('Notifications refreshed', 'info');
+            });
+            
+            // Functions
+            function renderNotifications(notificationsList) {
+                notificationList.innerHTML = '';
+                
+                if (notificationsList.length === 0) {
+                    emptyNotifications.style.display = 'block';
+                    return;
+                }
+                
+                emptyNotifications.style.display = 'none';
+                
+                notificationsList.forEach(notification => {
+                    const notificationItem = document.createElement('div');
+                    notificationItem.className = `notification-item ${notification.read ? '' : 'unread'}`;
+                    
+                    // Determine icon class
+                    let iconClass = '';
+                    switch(notification.type) {
+                        case 'system':
+                        case 'info':
+                            iconClass = 'info';
+                            break;
+                        case 'success':
+                            iconClass = 'success';
+                            break;
+                        case 'warning':
+                            iconClass = 'warning';
+                            break;
+                        case 'security':
+                        case 'danger':
+                            iconClass = 'danger';
+                            break;
+                    }
+                    
+                    notificationItem.innerHTML = `
+                        <div class="notification-icon-container ${iconClass}">
+                            <i class="${notification.icon}"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">${notification.title}</div>
+                            <div class="notification-message">${notification.message}</div>
+                            <div class="notification-time">${notification.time}</div>
+                            <div class="notification-actions">
+                                ${notification.actions.map(action => 
+                                    `<button class="notification-btn" onclick="handleNotificationAction(${notification.id}, '${action}')">${action}</button>`
+                                ).join('')}
+                            </div>
+                        </div>
+                        ${notification.read ? '' : '<div class="notification-mark"></div>'}
+                    `;
+                    
+                    // Add click event to mark as read
+                    notificationItem.addEventListener('click', function(e) {
+                        if (!e.target.classList.contains('notification-btn')) {
+                            notification.read = true;
+                            renderNotifications(notifications);
+                            updateNotificationCount();
+                        }
+                    });
+                    
+                    notificationList.appendChild(notificationItem);
+                });
+            }
+            
+            function updateNotificationCount() {
+                const unreadCount = notificationsData.filter(n => !n.read).length;
+                notificationCount.textContent = unreadCount;
+                
+                // Update filter button counts
+                document.querySelector('[data-filter="all"] span').textContent = notificationsData.length;
+                document.querySelector('[data-filter="unread"] span').textContent = unreadCount;
+                document.querySelector('[data-filter="system"] span').textContent = notificationsData.filter(n => n.type === 'system').length;
+                document.querySelector('[data-filter="security"] span').textContent = notificationsData.filter(n => n.type === 'security').length;
+                document.querySelector('[data-filter="updates"] span').textContent = notificationsData.filter(n => n.type === 'info').length;
+            }
+            
+            function showNotification(message, type) {
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    right: 20px;
+                    background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+                    z-index: 1000;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    max-width: 350px;
+                    animation: slideIn 0.3s ease-out;
+                `;
+                
+                notification.innerHTML = `
+                    <div style="font-size: 1.2rem;">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    </div>
+                    <div style="font-weight: 500;">${message}</div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Remove notification after 3 seconds
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease-out';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
+            
+            // Add CSS for notification animations
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Simulate new notification
+            setInterval(() => {
+                if (Math.random() > 0.7) { // 30% chance of new notification
+                    const types = ['info', 'success', 'warning', 'system'];
+                    const messages = [
+                        "New feature suggestion received from a user",
+                        "Weekly performance report is ready",
+                        "Backup completed successfully",
+                        "New comment on your post",
+                        "Subscription renewal reminder"
+                    ];
+                    
+                    const newNotification = {
+                        id: notificationsData.length + 1,
+                        title: "New Alert",
+                        message: messages[Math.floor(Math.random() * messages.length)],
+                        type: types[Math.floor(Math.random() * types.length)],
+                        icon: "fas fa-bell",
+                        time: "Just now",
+                        read: false,
+                        actions: ["View", "Dismiss"]
+                    };
+                    
+                    notificationsData.unshift(newNotification);
+                    
+                    if (currentFilter === 'all' || currentFilter === newNotification.type || 
+                        (currentFilter === 'unread' && !newNotification.read)) {
+                        notifications.unshift(newNotification);
+                        renderNotifications(notifications);
+                    }
+                    
+                    updateNotificationCount();
+                    
+                    // Show desktop notification if enabled
+                    if (document.querySelector('.toggle-switch input').checked && Notification.permission === "granted") {
+                        new Notification("New Notification", {
+                            body: newNotification.message,
+                            icon: "/favicon.ico"
+                        });
+                    }
+                }
+            }, 30000); // Check every 30 seconds
+        });
+        
+        // Global function for notification actions
+        function handleNotificationAction(id, action) {
+            alert(`Action "${action}" for notification ${id}\n\nIn a real application, this would perform the corresponding action.`);
+        }
+        
+        // Request notification permission
+        if (Notification.permission === "default") {
+            Notification.requestPermission();
+        }
+    </script>
+</body>
+</html>

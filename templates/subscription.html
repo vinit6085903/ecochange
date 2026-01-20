@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Plans | Choose Your Plan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #3a86ff;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 32px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: #555;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: #3a86ff;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3a86ff, #8338ec);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            font-size: 36px;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            color: #718096;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Billing Toggle */
+        .billing-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .toggle-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 70px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background: linear-gradient(90deg, #3a86ff, #8338ec);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(36px);
+        }
+        
+        .discount-badge {
+            background-color: #ff006e;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        /* Plans Section */
+        .plans-section {
+            margin-bottom: 60px;
+        }
+        
+        .plans-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        @media (max-width: 992px) {
+            .plans-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .plans-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .plan-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        
+        .plan-card.popular {
+            border: 2px solid #3a86ff;
+            transform: scale(1.05);
+        }
+        
+        .plan-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: linear-gradient(90deg, #3a86ff, #8338ec);
+            color: white;
+            padding: 8px 40px;
+            font-size: 14px;
+            font-weight: 700;
+            transform: rotate(45deg);
+            box-shadow: 0 3px 10px rgba(58, 134, 255, 0.3);
+        }
+        
+        .plan-header {
+            padding: 30px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .plan-description {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .plan-price {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+        
+        .price-amount {
+            font-size: 48px;
+            font-weight: 800;
+            color: #2d3748;
+        }
+        
+        .price-period {
+            font-size: 16px;
+            color: #718096;
+            margin-left: 5px;
+        }
+        
+        .plan-savings {
+            color: #38a169;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .plan-features {
+            padding: 30px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .feature-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f7fafc;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list i {
+            color: #38a169;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .feature-list i.fa-times {
+            color: #e53e3e;
+        }
+        
+        .plan-button {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            text-align: center;
+            background: linear-gradient(90deg, #3a86ff, #8338ec);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .plan-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
+        }
+        
+        .plan-button.secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+        
+        .plan-button.secondary:hover {
+            background: #cbd5e0;
+            box-shadow: 0 5px 15px rgba(203, 213, 224, 0.4);
+        }
+        
+        /* Payment Section */
+        .payment-section {
+            background-color: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+            display: none;
+        }
+        
+        .payment-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .payment-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+        
+        .selected-plan-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: #f7fafc;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .selected-plan-name {
+            font-weight: 700;
+            color: #3a86ff;
+            font-size: 18px;
+        }
+        
+        .selected-plan-price {
+            font-weight: 700;
+            color: #2d3748;
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .payment-method {
+            flex: 1;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-method:hover {
+            border-color: #cbd5e0;
+            background-color: #f7fafc;
+        }
+        
+        .payment-method.active {
+            border-color: #3a86ff;
+            background-color: rgba(58, 134, 255, 0.05);
+        }
+        
+        .payment-method i {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        
+        .payment-method.credit-card i {
+            color: #3a86ff;
+        }
+        
+        .payment-method.paypal i {
+            color: #003087;
+        }
+        
+        .payment-method.crypto i {
+            color: #f7931a;
+        }
+        
+        .payment-form {
+            margin-top: 30px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #3a86ff;
+            box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.1);
+        }
+        
+        .card-details {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .card-details .form-group {
+            flex: 1;
+        }
+        
+        .cvv-hint {
+            position: relative;
+        }
+        
+        .cvv-hint:hover .cvv-tooltip {
+            display: block;
+        }
+        
+        .cvv-tooltip {
+            display: none;
+            position: absolute;
+            top: -70px;
+            right: 0;
+            background-color: #2d3748;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            width: 200px;
+            z-index: 10;
+        }
+        
+        .cvv-tooltip:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: #2d3748 transparent transparent;
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .total-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+        
+        .submit-button {
+            padding: 16px 40px;
+            background: linear-gradient(90deg, #3a86ff, #8338ec);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
+        }
+        
+        .security-note {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        .security-note i {
+            color: #38a169;
+        }
+        
+        /* FAQ Section */
+        .faq-section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 40px;
+        }
+        
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .faq-question {
+            padding: 20px;
+            background-color: white;
+            font-weight: 600;
+            color: #2d3748;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 500px;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #718096;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 40px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: #718096;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #3a86ff;
+        }
+        
+        /* Success Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            text-align: center;
+            animation: modalFadeIn 0.5s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #38a169, #3a86ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+            color: white;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+        
+        .modal-message {
+            color: #718096;
+            margin-bottom: 30px;
+        }
+        
+        .modal-button {
+            padding: 12px 30px;
+            background: linear-gradient(90deg, #3a86ff, #8338ec);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .payment-methods {
+                flex-direction: column;
+            }
+            
+            .card-details {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                ProSuite
+            </div>
+            <nav class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="features.html">Features</a>
+                <a href="pricing.html" class="active">Pricing</a>
+                <a href="support.html">Support</a>
+                <a href="ai-engine.html">AI Tools</a>
+            </nav>
+            <div class="user-actions">
+                <div class="user-profile">
+                    <div class="profile-avatar">AJ</div>
+                    <div>
+                        <div style="font-weight: 600;">Alex Johnson</div>
+                        <div style="font-size: 12px; color: #718096;">Free Plan</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Choose Your Perfect Plan</h1>
+            <p>Select the plan that matches your needs. All plans include a 14-day free trial with full access to all features.</p>
+        </div>
+        
+        <!-- Billing Toggle -->
+        <div class="billing-toggle">
+            <span class="toggle-label">Monthly Billing</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="billingToggle">
+                <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label">Annual Billing</span>
+            <div class="discount-badge">Save 20%</div>
+        </div>
+        
+        <!-- Plans Section -->
+        <div class="plans-section">
+            <div class="plans-container">
+                <!-- Basic Plan -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <div class="plan-name">Basic</div>
+                        <div class="plan-description">For individuals and small projects</div>
+                        <div class="plan-price">
+                            <span class="price-amount" id="basic-price">$19</span>
+                            <span class="price-period" id="basic-period">/month</span>
+                        </div>
+                        <div class="plan-savings" id="basic-savings">Save $48 annually</div>
+                    </div>
+                    <div class="plan-features">
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Up to 5 projects</li>
+                            <li><i class="fas fa-check"></i> 10GB storage</li>
+                            <li><i class="fas fa-check"></i> Basic analytics</li>
+                            <li><i class="fas fa-check"></i> Email support</li>
+                            <li><i class="fas fa-times"></i> AI-powered tools</li>
+                            <li><i class="fas fa-times"></i> Advanced reporting</li>
+                            <li><i class="fas fa-times"></i> Priority support</li>
+                            <li><i class="fas fa-times"></i> API access</li>
+                        </ul>
+                        <button class="plan-button secondary" data-plan="basic">Select Plan</button>
+                    </div>
+                </div>
+                
+                <!-- Professional Plan (Popular) -->
+                <div class="plan-card popular">
+                    <div class="popular-badge">MOST POPULAR</div>
+                    <div class="plan-header">
+                        <div class="plan-name">Professional</div>
+                        <div class="plan-description">For growing teams and businesses</div>
+                        <div class="plan-price">
+                            <span class="price-amount" id="pro-price">$49</span>
+                            <span class="price-period" id="pro-period">/month</span>
+                        </div>
+                        <div class="plan-savings" id="pro-savings">Save $120 annually</div>
+                    </div>
+                    <div class="plan-features">
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Up to 20 projects</li>
+                            <li><i class="fas fa-check"></i> 100GB storage</li>
+                            <li><i class="fas fa-check"></i> Advanced analytics</li>
+                            <li><i class="fas fa-check"></i> Priority email support</li>
+                            <li><i class="fas fa-check"></i> AI-powered tools</li>
+                            <li><i class="fas fa-check"></i> Advanced reporting</li>
+                            <li><i class="fas fa-times"></i> 24/7 phone support</li>
+                            <li><i class="fas fa-times"></i> Full API access</li>
+                        </ul>
+                        <button class="plan-button" data-plan="professional">Select Plan</button>
+                    </div>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <div class="plan-name">Enterprise</div>
+                        <div class="plan-description">For large organizations</div>
+                        <div class="plan-price">
+                            <span class="price-amount" id="enterprise-price">$99</span>
+                            <span class="price-period" id="enterprise-period">/month</span>
+                        </div>
+                        <div class="plan-savings" id="enterprise-savings">Save $240 annually</div>
+                    </div>
+                    <div class="plan-features">
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Unlimited projects</li>
+                            <li><i class="fas fa-check"></i> 1TB storage</li>
+                            <li><i class="fas fa-check"></i> Advanced analytics</li>
+                            <li><i class="fas fa-check"></i> 24/7 phone support</li>
+                            <li><i class="fas fa-check"></i> AI-powered tools</li>
+                            <li><i class="fas fa-check"></i> Advanced reporting</li>
+                            <li><i class="fas fa-check"></i> Dedicated account manager</li>
+                            <li><i class="fas fa-check"></i> Full API access</li>
+                        </ul>
+                        <button class="plan-button secondary" data-plan="enterprise">Select Plan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payment Section -->
+        <div class="payment-section" id="paymentSection">
+            <div class="payment-header">
+                <div class="payment-title">Complete Your Subscription</div>
+                <button class="plan-button secondary" id="changePlanBtn" style="width: auto; padding: 10px 20px;">
+                    <i class="fas fa-arrow-left"></i> Change Plan
+                </button>
+            </div>
+            
+            <div class="selected-plan-info">
+                <div>
+                    <div class="selected-plan-name" id="selectedPlanName">Professional Plan</div>
+                    <div class="selected-plan-price" id="selectedPlanPrice">$49/month</div>
+                </div>
+                <div style="margin-left: auto; font-size: 14px; color: #718096;">
+                    <div>14-day free trial • Cancel anytime</div>
+                </div>
+            </div>
+            
+            <div class="payment-methods">
+                <div class="payment-method credit-card active" data-method="credit-card">
+                    <i class="far fa-credit-card"></i>
+                    <div style="font-weight: 600;">Credit Card</div>
+                    <div style="font-size: 14px; color: #718096;">Visa, Mastercard, Amex</div>
+                </div>
+                
+                <div class="payment-method paypal" data-method="paypal">
+                    <i class="fab fa-paypal"></i>
+                    <div style="font-weight: 600;">PayPal</div>
+                    <div style="font-size: 14px; color: #718096;">Fast & secure</div>
+                </div>
+                
+                <div class="payment-method crypto" data-method="crypto">
+                    <i class="fab fa-bitcoin"></i>
+                    <div style="font-weight: 600;">Cryptocurrency</div>
+                    <div style="font-size: 14px; color: #718096;">BTC, ETH, USDC</div>
+                </div>
+            </div>
+            
+            <!-- Credit Card Form -->
+            <div class="payment-form" id="creditCardForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cardName">Cardholder Name</label>
+                        <input type="text" id="cardName" class="form-control" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number</label>
+                        <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456">
+                    </div>
+                </div>
+                
+                <div class="card-details">
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date</label>
+                        <input type="text" id="expiryDate" class="form-control" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group cvv-hint">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" class="form-control" placeholder="123">
+                        <div class="cvv-tooltip">
+                            The CVV is a 3-digit code on the back of your card (4 digits for American Express).
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select id="country" class="form-control">
+                        <option value="">Select Country</option>
+                        <option value="US" selected>United States</option>
+                        <option value="CA">Canada</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="AU">Australia</option>
+                        <option value="DE">Germany</option>
+                        <option value="FR">France</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="coupon">Coupon Code (Optional)</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="coupon" class="form-control" placeholder="Enter coupon code">
+                        <button class="plan-button secondary" id="applyCouponBtn" style="width: auto; padding: 0 20px;">Apply</button>
+                    </div>
+                </div>
+                
+                <div class="security-note">
+                    <i class="fas fa-lock"></i>
+                    <span>Your payment information is encrypted and secure. We never store your full card details.</span>
+                </div>
+                
+                <div class="form-footer">
+                    <div>
+                        <div style="font-size: 14px; color: #718096;">Total Amount</div>
+                        <div class="total-amount" id="totalAmount">$49.00</div>
+                        <div style="font-size: 12px; color: #718096;">+ applicable taxes</div>
+                    </div>
+                    <button class="submit-button" id="submitPaymentBtn">
+                        <i class="fas fa-lock"></i>
+                        Subscribe Now
+                    </button>
+                </div>
+            </div>
+            
+            <!-- PayPal Form (Hidden by default) -->
+            <div class="payment-form" id="paypalForm" style="display: none;">
+                <div style="text-align: center; padding: 40px 0;">
+                    <i class="fab fa-paypal" style="font-size: 64px; color: #003087; margin-bottom: 20px;"></i>
+                    <h3 style="margin-bottom: 15px;">Pay with PayPal</h3>
+                    <p style="color: #718096; margin-bottom: 30px;">You will be redirected to PayPal to complete your payment securely.</p>
+                    <button class="submit-button" id="paypalButton">
+                        <i class="fab fa-paypal"></i>
+                        Continue with PayPal
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Crypto Form (Hidden by default) -->
+            <div class="payment-form" id="cryptoForm" style="display: none;">
+                <div style="text-align: center; padding: 40px 0;">
+                    <i class="fab fa-bitcoin" style="font-size: 64px; color: #f7931a; margin-bottom: 20px;"></i>
+                    <h3 style="margin-bottom: 15px;">Pay with Cryptocurrency</h3>
+                    <p style="color: #718096; margin-bottom: 30px;">Select your preferred cryptocurrency to complete the payment.</p>
+                    
+                    <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 30px;">
+                        <div class="payment-method" style="width: 120px; padding: 15px;">
+                            <i class="fab fa-bitcoin" style="color: #f7931a;"></i>
+                            <div style="font-weight: 600; margin-top: 10px;">Bitcoin</div>
+                        </div>
+                        <div class="payment-method" style="width: 120px; padding: 15px;">
+                            <i class="fab fa-ethereum" style="color: #627eea;"></i>
+                            <div style="font-weight: 600; margin-top: 10px;">Ethereum</div>
+                        </div>
+                        <div class="payment-method" style="width: 120px; padding: 15px;">
+                            <i class="fas fa-coins" style="color: #2775ca;"></i>
+                            <div style="font-weight: 600; margin-top: 10px;">USDC</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background-color: #f7fafc; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
+                        <div style="font-weight: 600; margin-bottom: 10px;">Payment Details</div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Amount (USD):</span>
+                            <span style="font-weight: 600;">$49.00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>BTC Equivalent:</span>
+                            <span style="font-weight: 600;" id="btcAmount">0.00142 BTC</span>
+                        </div>
+                        <div style="font-size: 12px; color: #718096; text-align: left; margin-top: 15px;">
+                            <i class="fas fa-info-circle"></i> Exchange rate updates every 30 seconds. Payment address will be generated after confirmation.
+                        </div>
+                    </div>
+                    
+                    <button class="submit-button" id="cryptoButton">
+                        <i class="fas fa-qrcode"></i>
+                        Generate Payment Address
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Can I change my plan later?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, you can upgrade or downgrade your plan at any time. When upgrading, you'll be charged the prorated difference for the remainder of your billing cycle. Downgrades will take effect at the start of your next billing cycle.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is there a free trial?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, all paid plans come with a 14-day free trial. You'll have full access to all features during the trial period. No credit card is required to start the trial.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What payment methods do you accept?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        We accept all major credit cards (Visa, Mastercard, American Express), PayPal, and various cryptocurrencies including Bitcoin, Ethereum, and USDC.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Can I cancel my subscription?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, you can cancel your subscription at any time. After cancellation, you'll continue to have access until the end of your current billing period. No refunds are provided for partial months.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Do you offer discounts for teams?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, we offer volume discounts for teams of 10+ users. Contact our sales team at sales@prosuite.com for custom pricing and enterprise agreements.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">Contact Us</a>
+            </div>
+            <div>
+                <div class="logo" style="font-size: 20px; margin-bottom: 10px;">
+                    <i class="fas fa-rocket"></i>
+                    ProSuite
+                </div>
+                <div>© 2023 ProSuite. All rights reserved.</div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <div class="modal-title">Subscription Successful!</div>
+            <div class="modal-message">
+                Thank you for subscribing to the <span id="confirmedPlanName">Professional Plan</span>. 
+                Your account has been upgraded and you now have access to all premium features.
+            </div>
+            <div style="margin-bottom: 20px;">
+                <div style="background-color: #f7fafc; padding: 15px; border-radius: 10px; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>Plan:</span>
+                        <span style="font-weight: 600;" id="modalPlanName">Professional</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>Amount:</span>
+                        <span style="font-weight: 600;" id="modalPlanPrice">$49/month</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Next billing:</span>
+                        <span style="font-weight: 600;" id="nextBillingDate">Nov 15, 2023</span>
+                    </div>
+                </div>
+            </div>
+            <button class="modal-button" id="goToDashboardBtn">Go to Dashboard</button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const billingToggle = document.getElementById('billingToggle');
+        const planButtons = document.querySelectorAll('.plan-button');
+        const paymentSection = document.getElementById('paymentSection');
+        const changePlanBtn = document.getElementById('changePlanBtn');
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        const creditCardForm = document.getElementById('creditCardForm');
+        const paypalForm = document.getElementById('paypalForm');
+        const cryptoForm = document.getElementById('cryptoForm');
+        const submitPaymentBtn = document.getElementById('submitPaymentBtn');
+        const applyCouponBtn = document.getElementById('applyCouponBtn');
+        const successModal = document.getElementById('successModal');
+        const goToDashboardBtn = document.getElementById('goToDashboardBtn');
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        // Plan data
+        const plans = {
+            basic: {
+                monthly: 19,
+                annual: 190, // $19 * 10 months (20% off)
+                name: 'Basic Plan'
+            },
+            professional: {
+                monthly: 49,
+                annual: 470, // $49 * 10 months (20% off)
+                name: 'Professional Plan'
+            },
+            enterprise: {
+                monthly: 99,
+                annual: 950, // $99 * 10 months (20% off)
+                name: 'Enterprise Plan'
+            }
+        };
+        
+        // Selected plan
+        let selectedPlan = 'professional';
+        let isAnnual = false;
+        
+        // Initialize
+        updatePlanPrices();
+        
+        // Billing toggle
+        billingToggle.addEventListener('change', function() {
+            isAnnual = this.checked;
+            updatePlanPrices();
+            
+            // Update selected plan price if a plan is selected
+            if (paymentSection.classList.contains('active')) {
+                updateSelectedPlanPrice();
+            }
+        });
+        
+        // Plan selection
+        planButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                selectedPlan = this.getAttribute('data-plan');
+                
+                // Update UI
+                document.querySelectorAll('.plan-button').forEach(btn => {
+                    if (btn.getAttribute('data-plan') === selectedPlan) {
+                        btn.classList.remove('secondary');
+                    } else {
+                        btn.classList.add('secondary');
+                    }
+                });
+                
+                // Show payment section
+                showPaymentSection();
+            });
+        });
+        
+        // Change plan button
+        changePlanBtn.addEventListener('click', function() {
+            paymentSection.classList.remove('active');
+        });
+        
+        // Payment method selection
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', function() {
+                // Update active class
+                paymentMethods.forEach(m => m.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding form
+                const methodType = this.getAttribute('data-method');
+                creditCardForm.style.display = 'none';
+                paypalForm.style.display = 'none';
+                cryptoForm.style.display = 'none';
+                
+                if (methodType === 'credit-card') {
+                    creditCardForm.style.display = 'block';
+                } else if (methodType === 'paypal') {
+                    paypalForm.style.display = 'block';
+                } else if (methodType === 'crypto') {
+                    cryptoForm.style.display = 'block';
+                    updateCryptoPrice();
+                }
+            });
+        });
+        
+        // Apply coupon
+        applyCouponBtn.addEventListener('click', function() {
+            const couponCode = document.getElementById('coupon').value.toUpperCase();
+            let discount = 0;
+            
+            if (couponCode === 'WELCOME20') {
+                discount = 20;
+                showToast('Coupon applied! 20% discount added.');
+            } else if (couponCode === 'SAVE10') {
+                discount = 10;
+                showToast('Coupon applied! 10% discount added.');
+            } else if (couponCode) {
+                showToast('Invalid coupon code.', 'error');
+                return;
+            }
+            
+            // Update total amount with discount
+            updateTotalAmount(discount);
+        });
+        
+        // Submit payment
+        submitPaymentBtn.addEventListener('click', function() {
+            // Validate form
+            if (!validatePaymentForm()) {
+                return;
+            }
+            
+            // Simulate payment processing
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            this.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Show success modal
+                document.getElementById('confirmedPlanName').textContent = plans[selectedPlan].name;
+                document.getElementById('modalPlanName').textContent = plans[selectedPlan].name;
+                
+                const price = isAnnual ? plans[selectedPlan].annual : plans[selectedPlan].monthly;
+                const period = isAnnual ? '/year' : '/month';
+                document.getElementById('modalPlanPrice').textContent = `$${price}${period}`;
+                
+                // Calculate next billing date
+                const nextBilling = new Date();
+                if (isAnnual) {
+                    nextBilling.setFullYear(nextBilling.getFullYear() + 1);
+                } else {
+                    nextBilling.setMonth(nextBilling.getMonth() + 1);
+                }
+                document.getElementById('nextBillingDate').textContent = nextBilling.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                
+                successModal.classList.add('active');
+                
+                // Reset button
+                this.innerHTML = '<i class="fas fa-lock"></i> Subscribe Now';
+                this.disabled = false;
+            }, 2000);
+        });
+        
+        // PayPal button
+        document.getElementById('paypalButton').addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting to PayPal...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                // In a real app, this would redirect to PayPal
+                showToast('Redirecting to PayPal...', 'info');
+                this.innerHTML = '<i class="fab fa-paypal"></i> Continue with PayPal';
+                this.disabled = false;
+            }, 1000);
+        });
+        
+        // Crypto button
+        document.getElementById('cryptoButton').addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating address...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                showToast('Payment address generated! Check your email for details.', 'success');
+                this.innerHTML = '<i class="fas fa-qrcode"></i> Generate Payment Address';
+                this.disabled = false;
+            }, 1500);
+        });
+        
+        // Go to dashboard
+        goToDashboardBtn.addEventListener('click', function() {
+            // In a real app, this would redirect to dashboard
+            showToast('Redirecting to dashboard...', 'success');
+            successModal.classList.remove('active');
+        });
+        
+        // FAQ toggle
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                // Close other open items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Functions
+        function updatePlanPrices() {
+            // Update basic plan
+            document.getElementById('basic-price').textContent = `$${isAnnual ? plans.basic.annual : plans.basic.monthly}`;
+            document.getElementById('basic-period').textContent = isAnnual ? '/year' : '/month';
+            document.getElementById('basic-savings').textContent = isAnnual ? 'Save $48 annually' : '';
+            
+            // Update professional plan
+            document.getElementById('pro-price').textContent = `$${isAnnual ? plans.professional.annual : plans.professional.monthly}`;
+            document.getElementById('pro-period').textContent = isAnnual ? '/year' : '/month';
+            document.getElementById('pro-savings').textContent = isAnnual ? 'Save $120 annually' : '';
+            
+            // Update enterprise plan
+            document.getElementById('enterprise-price').textContent = `$${isAnnual ? plans.enterprise.annual : plans.enterprise.monthly}`;
+            document.getElementById('enterprise-period').textContent = isAnnual ? '/year' : '/month';
+            document.getElementById('enterprise-savings').textContent = isAnnual ? 'Save $240 annually' : '';
+        }
+        
+        function showPaymentSection() {
+            // Update selected plan info
+            document.getElementById('selectedPlanName').textContent = plans[selectedPlan].name;
+            updateSelectedPlanPrice();
+            
+            // Show payment section
+            paymentSection.classList.add('active');
+            
+            // Scroll to payment section
+            paymentSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function updateSelectedPlanPrice() {
+            const price = isAnnual ? plans[selectedPlan].annual : plans[selectedPlan].monthly;
+            const period = isAnnual ? '/year' : '/month';
+            document.getElementById('selectedPlanPrice').textContent = `$${price}${period}`;
+            updateTotalAmount(0);
+        }
+        
+        function updateTotalAmount(discount) {
+            const price = isAnnual ? plans[selectedPlan].annual : plans[selectedPlan].monthly;
+            const discountedPrice = discount > 0 ? price * (1 - discount/100) : price;
+            document.getElementById('totalAmount').textContent = `$${discountedPrice.toFixed(2)}`;
+        }
+        
+        function updateCryptoPrice() {
+            // Simulate BTC price calculation
+            const price = isAnnual ? plans[selectedPlan].annual : plans[selectedPlan].monthly;
+            const btcAmount = (price / 35000).toFixed(6); // Simulated BTC price
+            document.getElementById('btcAmount').textContent = `${btcAmount} BTC`;
+        }
+        
+        function validatePaymentForm() {
+            const cardName = document.getElementById('cardName').value.trim();
+            const cardNumber = document.getElementById('cardNumber').value.trim();
+            const expiryDate = document.getElementById('expiryDate').value.trim();
+            const cvv = document.getElementById('cvv').value.trim();
+            const country = document.getElementById('country').value;
+            
+            if (!cardName) {
+                showToast('Please enter cardholder name', 'error');
+                return false;
+            }
+            
+            if (!cardNumber || cardNumber.replace(/\s/g, '').length < 16) {
+                showToast('Please enter a valid card number', 'error');
+                return false;
+            }
+            
+            if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) {
+                showToast('Please enter a valid expiry date (MM/YY)', 'error');
+                return false;
+            }
+            
+            if (!cvv || (cvv.length !== 3 && cvv.length !== 4)) {
+                showToast('Please enter a valid CVV', 'error');
+                return false;
+            }
+            
+            if (!country) {
+                showToast('Please select your country', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        function showToast(message, type = 'success') {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background-color: ${type === 'success' ? '#38a169' : type === 'error' ? '#e53e3e' : '#3a86ff'};
+                color: white;
+                border-radius: 8px;
+                font-weight: 600;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Add CSS for toast animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Auto-format card number
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{4})/g, '$1 ').trim();
+            e.target.value = value.substring(0, 19);
+        });
+        
+        // Auto-format expiry date
+        document.getElementById('expiryDate').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value.substring(0, 5);
+        });
+        
+        // Auto-format CVV
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
+        });
+        
+        // Show payment section for professional plan by default (as it's popular)
+        setTimeout(() => {
+            if (!paymentSection.classList.contains('active')) {
+                document.querySelector('.plan-card.popular .plan-button').click();
+            }
+        }, 500);
+    </script>
+</body>
+</html>
